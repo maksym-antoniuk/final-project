@@ -1,5 +1,7 @@
 package listeners;
 
+import db.transaction.ConnectionManager;
+import db.transaction.TransactionManager;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -12,6 +14,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.io.File;
+import java.sql.*;
 
 @WebListener
 public class ServletContextListener implements javax.servlet.ServletContextListener {
@@ -27,6 +30,24 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
     public void contextInitialized(ServletContextEvent sce) {
         initLog4j(sce.getServletContext());
         LOGGER.trace("init context");
+
+        TransactionManager transactionManager = new TransactionManager(getDataSource());
+
+        transactionManager.execute(() -> {
+            Connection con = ConnectionManager.getConnection();
+            Statement st = null;
+            ResultSet rs = null;
+            try {
+                st = con.createStatement();
+                rs = st.executeQuery("SELECT * from users");
+                while (rs.next()) {
+                    System.out.println(rs.getString("name"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
     }
 
     private DataSource getDataSource() {

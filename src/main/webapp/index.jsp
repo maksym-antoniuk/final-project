@@ -25,7 +25,7 @@
                 <input class="w3-input w3-border" name="password" type="password" placeholder="Password">
             </div>
         </div>
-        <input type="password"></input>
+        <input type="email"></input>
         <p>
             <button class="w3-btn w3-deep-purple">Submit</button></p>
     </form>
