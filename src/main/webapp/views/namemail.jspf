@@ -1,0 +1,8 @@
+<label>Name</label>
+<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Name" id="username" name="username" required>
+<label>Lastname</label>
+<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Lastname" id="userlastname" name="userlastname" required>
+<label>Email</label>
+<input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="Enter Email" id="useremail" name="useremail" required>
+<label>Phone</label>
+<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Phone" id="userphone" name="userphone" required>
