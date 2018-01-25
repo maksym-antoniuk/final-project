@@ -1,0 +1,8 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:if test="${empty sessionScope.user}">
+    <button class="w3-button w3-circle w3-red login-btn" id="sign_in"><i class="fa fa-sign-in w3-xxlarge"></i></button>
+</c:if>
+<c:if test="${!empty sessionScope.user}">
+    <form style="display: none" id="logoutForm" action="logout" method="post"></form>
+    <button class="w3-button w3-circle w3-red login-btn" id="sign_out" onclick="document.getElementById('logoutForm').submit();"><i class="fa fa-sign-out w3-xxlarge"></i></button>
+</c:if>

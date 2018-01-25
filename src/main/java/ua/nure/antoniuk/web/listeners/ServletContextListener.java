@@ -12,6 +12,7 @@ import ua.nure.antoniuk.db.transaction.TransactionManager;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.services.*;
 import ua.nure.antoniuk.util.Constants;
 
@@ -23,6 +24,10 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 @WebListener
 public class ServletContextListener implements javax.servlet.ServletContextListener {

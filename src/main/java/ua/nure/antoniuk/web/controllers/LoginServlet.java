@@ -25,8 +25,8 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if (errors.isEmpty()) {
             LOGGER.trace("GOOD LOGIN");
-            session.setAttribute("user", loginService.getByEmail(request));
-            response.sendRedirect("admin");
+            session.setAttribute(Constants.SESSION_USER, loginService.getByEmail(request));
+            response.sendRedirect("journey");
         } else {
             LOGGER.trace("BAD LOGIN");
             response.sendRedirect("index.jsp");

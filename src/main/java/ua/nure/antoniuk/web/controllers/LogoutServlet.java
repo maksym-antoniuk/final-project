@@ -18,12 +18,12 @@ public class LogoutServlet extends HttpServlet {
     private LogoutService logoutService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        logoutService.logout(request);
+        response.sendRedirect("index.jsp");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logoutService.logout(request);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+
     }
 
     @Override

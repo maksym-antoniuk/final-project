@@ -89,6 +89,10 @@ public abstract class Constants {
 
     public static final List<String> BODYWORK_LIST = new ArrayList<>();
 
+    public static final String ONLINE_USERS = "online_users";
+
+    //Session attributes
+    public static final String SESSION_USER = "user";
     static {
         BODYWORK_LIST.add(Bodywork.ANIMAL.getBodywork());
         BODYWORK_LIST.add(Bodywork.BULK.getBodywork());

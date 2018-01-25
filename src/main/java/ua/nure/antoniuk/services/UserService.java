@@ -8,7 +8,10 @@ import ua.nure.antoniuk.db.transaction.TransactionManager;
 import ua.nure.antoniuk.entity.PotentialCar;
 import ua.nure.antoniuk.entity.PotentialUser;
 import ua.nure.antoniuk.entity.User;
+import ua.nure.antoniuk.util.Constants;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,4 +69,5 @@ public class UserService {
     public List<PotentialUser> getPotentialUsers() {
         return transactionManager.execute(() -> potentialUserDAO.getAll());
     }
+
 }

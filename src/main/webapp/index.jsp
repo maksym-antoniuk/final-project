@@ -1,4 +1,5 @@
 <%@page contentType="text/html;charset=utf-8" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="ma"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,8 @@
 </head>
 <body>
 
-<button class="w3-button w3-circle w3-red login-btn" id="sign_in"><i class="fa fa-sign-in w3-xxlarge"></i></button>
+<%@include file="/views/sign.jspf" %>
+
 
 <!-- SHOWCASE -->
 <section class="showcase">

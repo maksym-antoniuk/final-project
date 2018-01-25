@@ -32,7 +32,7 @@ public class Journey implements Serializable {
     }
 
     public String getDate() {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date.getTime());
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date.getTime());
     }
 
     public void setDate(Calendar date) {
@@ -96,7 +96,7 @@ public class Journey implements Serializable {
     }
 
     public String getDateFinish() {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(dateFinish.getTime());
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateFinish.getTime());
     }
 
     public void setDateFinish(Calendar dateFinish) {
