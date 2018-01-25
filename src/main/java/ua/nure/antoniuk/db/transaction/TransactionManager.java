@@ -22,12 +22,28 @@ public class TransactionManager {
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             ConnectionManager.setConnection(connection);
             result = transaction.execute();
             connection.commit();
         } catch (SQLException e) {
             LOGGER.error(e);
             rollback(connection);
+        } finally {
+            close(connection);
+        }
+        return result;
+    }
+
+    public <T> T executeWithoutTransaction(Transaction<T> transaction) {
+        Connection connection = null;
+        T result = null;
+        try {
+            connection = dataSource.getConnection();
+            ConnectionManager.setConnection(connection);
+            result = transaction.execute();
+        } catch (SQLException e) {
+            LOGGER.error(e);
         } finally {
             close(connection);
         }

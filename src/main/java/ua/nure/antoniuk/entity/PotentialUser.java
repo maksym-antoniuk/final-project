@@ -12,6 +12,15 @@ public class PotentialUser implements Serializable {
     private String lastname;
     private String email;
     private Role role;
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public int getId() {
         return id;
@@ -62,13 +71,14 @@ public class PotentialUser implements Serializable {
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getLastname(), that.getLastname()) &&
                 Objects.equals(getEmail(), that.getEmail()) &&
-                getRole() == that.getRole();
+                getRole() == that.getRole() &&
+                Objects.equals(getPhone(), that.getPhone());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getName(), getLastname(), getEmail(), getRole());
+        return Objects.hash(getId(), getName(), getLastname(), getEmail(), getRole(), getPhone());
     }
 
     @Override
@@ -78,7 +88,8 @@ public class PotentialUser implements Serializable {
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
-                ", role=" + role.getRole() +
+                ", role=" + role +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

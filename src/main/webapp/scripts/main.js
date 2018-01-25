@@ -1,6 +1,17 @@
 var showcaseButton = document.getElementById('showcaseButton');
 var modal = document.getElementById('start-modal');
+var loginModal = document.getElementById('login-modal')
 var closeModal = document.getElementById('closeModal');
+var signInButton = document.getElementById('sign_in');
+var closeLoginModal = document.getElementById('close-login-modal');
+
+signInButton.onclick = function (ev) {
+    loginModal.style.display = 'block';
+}
+
+closeLoginModal.onclick = function (ev) {
+    loginModal.style.display = "none";
+}
 
 showcaseButton.onclick = function (ev) {
     modal.style.display = 'block';
@@ -8,6 +19,7 @@ showcaseButton.onclick = function (ev) {
 }
 
 closeModal.onclick = function (ev) {
+    openRole(ev, 'manager');
     modal.style.display = 'none';
 }
 

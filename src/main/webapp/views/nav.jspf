@@ -1,7 +1,11 @@
-<nav class="w3-bar w3-black">
-    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black"><img src="img/L2.png" width="125px" height="125px"/></a>
-    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-home"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red">Link 1</a>
-    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red">Link 2</a>
-    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red">Link 3</a>
-</nav>
+<c:choose>
+    <c:when test="${\"driver\" == sessionScope.user.role.role}">
+        <%@include file="/views/driver_nav.jspf" %>
+    </c:when>
+    <c:when test="${\"manager\" == sessionScope.user.role.role}">
+        <%@include file="/views/manager_nav.jspf" %>
+    </c:when>
+    <c:when test="${\"admin\" == sessionScope.user.role.role}">
+        <%@include file="/views/admin_nav.jspf" %>
+    </c:when>
+</c:choose>

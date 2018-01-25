@@ -4,6 +4,7 @@ import ua.nure.antoniuk.util.Material;
 import ua.nure.antoniuk.util.Status;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -17,8 +18,8 @@ public class Journey implements Serializable {
     private float weight;
     private Material material;
     private float volume;
-    private int id_manager;
-    private int id_driver;
+    private int idManager;
+    private int idCar;
     private String from;
     private String where;
 
@@ -30,8 +31,8 @@ public class Journey implements Serializable {
         this.id = id;
     }
 
-    public Calendar getDate() {
-        return date;
+    public String getDate() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(date.getTime());
     }
 
     public void setDate(Calendar date) {
@@ -52,6 +53,22 @@ public class Journey implements Serializable {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getWhere() {
+        return where;
+    }
+
+    public void setWhere(String where) {
+        this.where = where;
     }
 
     public float getWeight() {
@@ -78,28 +95,28 @@ public class Journey implements Serializable {
         this.volume = volume;
     }
 
-    public int getId_manager() {
-        return id_manager;
-    }
-
-    public void setId_manager(int id_manager) {
-        this.id_manager = id_manager;
-    }
-
-    public Calendar getDateFinish() {
-        return dateFinish;
+    public String getDateFinish() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(dateFinish.getTime());
     }
 
     public void setDateFinish(Calendar dateFinish) {
         this.dateFinish = dateFinish;
     }
 
-    public int getId_driver() {
-        return id_driver;
+    public int getIdManager() {
+        return idManager;
     }
 
-    public void setId_driver(int id_driver) {
-        this.id_driver = id_driver;
+    public void setIdManager(int idManager) {
+        this.idManager = idManager;
+    }
+
+    public int getIdCar() {
+        return idCar;
+    }
+
+    public void setIdCar(int idCar) {
+        this.idCar = idCar;
     }
 
     @Override
@@ -108,13 +125,15 @@ public class Journey implements Serializable {
                 "id=" + id +
                 ", date=" + date +
                 ", dateFinish=" + dateFinish +
-                ", status=" + status +
+                ", status=" + status.getStatus() +
                 ", price=" + price +
                 ", weight=" + weight +
-                ", material=" + material +
+                ", material=" + material.getMaterial() +
                 ", volume=" + volume +
-                ", id_manager=" + id_manager +
-                ", id_driver=" + id_driver +
+                ", idManager=" + idManager +
+                ", idCar=" + idCar +
+                ", from='" + from + '\'' +
+                ", where='" + where + '\'' +
                 '}';
     }
 
@@ -127,17 +146,19 @@ public class Journey implements Serializable {
                 Float.compare(journey.getPrice(), getPrice()) == 0 &&
                 Float.compare(journey.getWeight(), getWeight()) == 0 &&
                 Float.compare(journey.getVolume(), getVolume()) == 0 &&
-                getId_manager() == journey.getId_manager() &&
-                getId_driver() == journey.getId_driver() &&
+                getIdManager() == journey.getIdManager() &&
+                getIdCar() == journey.getIdCar() &&
                 Objects.equals(getDate(), journey.getDate()) &&
                 Objects.equals(getDateFinish(), journey.getDateFinish()) &&
                 getStatus() == journey.getStatus() &&
-                getMaterial() == journey.getMaterial();
+                getMaterial() == journey.getMaterial() &&
+                Objects.equals(getFrom(), journey.getFrom()) &&
+                Objects.equals(getWhere(), journey.getWhere());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getDate(), getDateFinish(), getStatus(), getPrice(), getWeight(), getMaterial(), getVolume(), getId_manager(), getId_driver());
+        return Objects.hash(getId(), getDate(), getDateFinish(), getStatus(), getPrice(), getWeight(), getMaterial(), getVolume(), getIdManager(), getIdCar(), getFrom(), getWhere());
     }
 }

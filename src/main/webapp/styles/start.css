@@ -50,6 +50,15 @@
   display: none;
 }
 
+.login-btn {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  width: 80px;
+  height: 80px;
+  opacity: 0.7;
+  font-size: 12px;
+}
 @media only screen and (max-width:600px){
   body{
     margin-top:190px;

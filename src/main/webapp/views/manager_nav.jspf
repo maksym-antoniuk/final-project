@@ -1,0 +1,7 @@
+<nav class="w3-bar w3-black">
+    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-truck w3-xxlarge"></i></a>
+    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-folder-open w3-xxlarge"></i></a>
+    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-folder w3-xxlarge"></i></a>
+    <a href="${pageContext.request.contextPath}/logout" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right"><i class="fa fa-sign-out w3-xxlarge"></i></a>
+    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right"><i class="fa fa-user-secret w3-xxlarge"></i></a>
+</nav>

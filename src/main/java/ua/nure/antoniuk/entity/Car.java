@@ -10,6 +10,7 @@ public class Car implements Serializable {
     private int id;
     private String number;
     private String mark;
+    private String model;
     private String pathImg;
     private Bodywork bodywork;
     private float maxWeight;
@@ -22,6 +23,14 @@ public class Car implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getNumber() {
@@ -91,6 +100,7 @@ public class Car implements Serializable {
                 getIdDriver() == car.getIdDriver() &&
                 Objects.equals(getNumber(), car.getNumber()) &&
                 Objects.equals(getMark(), car.getMark()) &&
+                Objects.equals(getModel(), car.getModel()) &&
                 Objects.equals(getPathImg(), car.getPathImg()) &&
                 getBodywork() == car.getBodywork();
     }
@@ -98,7 +108,7 @@ public class Car implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getNumber(), getMark(), getPathImg(), getBodywork(), getMaxWeight(), getMaxVolume(), getIdDriver());
+        return Objects.hash(getId(), getNumber(), getMark(), getModel(), getPathImg(), getBodywork(), getMaxWeight(), getMaxVolume(), getIdDriver());
     }
 
     @Override
@@ -107,6 +117,7 @@ public class Car implements Serializable {
                 "id=" + id +
                 ", number='" + number + '\'' +
                 ", mark='" + mark + '\'' +
+                ", model='" + model + '\'' +
                 ", pathImg='" + pathImg + '\'' +
                 ", bodywork=" + bodywork.getBodywork() +
                 ", maxWeight=" + maxWeight +

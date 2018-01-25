@@ -9,6 +9,7 @@ public class PotentialCar implements Serializable {
 
     private int id;
     private String mark;
+    private String model;
     private String number;
     private String pathImg;
     private float maxWeight;
@@ -39,6 +40,14 @@ public class PotentialCar implements Serializable {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getPathImg() {
@@ -100,6 +109,7 @@ public class PotentialCar implements Serializable {
                 getIdUser() == that.getIdUser() &&
                 getIdPotentialUser() == that.getIdPotentialUser() &&
                 Objects.equals(getMark(), that.getMark()) &&
+                Objects.equals(getModel(), that.getModel()) &&
                 Objects.equals(getNumber(), that.getNumber()) &&
                 Objects.equals(getPathImg(), that.getPathImg()) &&
                 getBodywork() == that.getBodywork();
@@ -108,7 +118,7 @@ public class PotentialCar implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getMark(), getNumber(), getPathImg(), getMaxWeight(), getMaxVolume(), getIdUser(), getIdPotentialUser(), getBodywork());
+        return Objects.hash(getId(), getMark(), getModel(), getNumber(), getPathImg(), getMaxWeight(), getMaxVolume(), getIdUser(), getIdPotentialUser(), getBodywork());
     }
 
     @Override
@@ -116,6 +126,7 @@ public class PotentialCar implements Serializable {
         return "PotentialCar{" +
                 "id=" + id +
                 ", mark='" + mark + '\'' +
+                ", model='" + model + '\'' +
                 ", number='" + number + '\'' +
                 ", pathImg='" + pathImg + '\'' +
                 ", maxWeight=" + maxWeight +

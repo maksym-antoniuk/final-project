@@ -1,3 +1,4 @@
+<%@page contentType="text/html;charset=utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,16 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/start.css">
     <link rel="stylesheet" href="styles/w31.css">
-    <link rel="stylesheet" href="styles/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+
+<button class="w3-button w3-circle w3-red login-btn" id="sign_in"><i class="fa fa-sign-in w3-xxlarge"></i></button>
 
 <!-- SHOWCASE -->
 <section class="showcase">
     <div class="w3-container w3-center">
         <h1 class="w3-text-shadow w3-animate-opacity">Go Anywhere</h1>
         <hr>
-        <p class="w3-animate-opacity">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
+        <p class="w3-animate-opacity">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo</p>
         <button class="w3-button w3-red w3-large w3-opacity" id="showcaseButton">Start Here</button>
     </div>
 </section>
@@ -29,19 +35,28 @@
             </div>
             <div class="w3-col m7">
                 <button onclick="accFunction('driverQ')" class="w3-btn-block w3-left-align">
-                    What We Do</button>
+                    What We Do
+                </button>
 
                 <div id="driverQ" class="w3-container w3-show">
                     <h3>Требования к водителю</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
 
                 <button onclick="accFunction('managerQ')" class="w3-btn-block w3-left-align">
-                    What We Do</button>
+                    What We Do
+                </button>
 
                 <div id="managerQ" class="w3-container w3-hide">
                     <h3>Требования к менеджеру</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                 </div>
             </div>
         </div>
@@ -52,7 +67,8 @@
 <section id="services" class="section w3-red w3-hover-opacity">
     <div class="w3-container w3-center">
         <h1 class="w3-text-shadow">Виды перевозок</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua.</p>
     </div>
 </section>
 
@@ -96,10 +112,12 @@
         </header>
         <div class="w3-container" id="mytabs">
             <h2>Active Tabs</h2>
-            <p>To highlight the current tab/page the user is on, add a color class, and use JavaScript to update the active link.</p>
+            <p>To highlight the current tab/page the user is on, add a color class, and use JavaScript to update the
+                active link.</p>
 
             <div class="w3-bar w3-black">
-                <button class="w3-bar-item w3-button tablink w3-red" onclick="openRole(event,'manager')">Manager</button>
+                <button class="w3-bar-item w3-button tablink w3-red" onclick="openRole(event,'manager')">Manager
+                </button>
                 <button class="w3-bar-item w3-button tablink" onclick="openRole(event,'driver')">Driver</button>
             </div>
 
@@ -109,7 +127,18 @@
                     <form method="post" action="registration">
                         <div class="w3-section">
                             <input type="hidden" name="role" value="manager">
-                            <%@include file="/views/namemail.jspf" %>
+                            <label>Name</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Name"
+                                   id="manager_name" name="manager_name" required>
+                            <label>Surname</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Surname"
+                                   id="manager_surname" name="manager_surname" required>
+                            <label>Email</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="Enter Email"
+                                   id="manager_email" name="manager_email" required>
+                            <label>Phone</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Phone"
+                                   id="manager_phone" name="manager_phone" required>
                             <button class="w3-black w3-btn-block w3-section w3-padding">Submit</button>
                         </div>
                     </form>
@@ -122,13 +151,27 @@
                     <form method="post" action="registration">
                         <div class="w3-section">
                             <input type="hidden" name="role" value="driver">
-                            <%@include file="/views/namemail.jspf" %>
+                            <label>Name</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Name"
+                                   id="driver_name" name="driver_name" required>
+                            <label>Surname</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Surname"
+                                   id="driver_surname" name="driver_surname" required>
+                            <label>Email</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="Enter Email"
+                                   id="driver_email" name="driver_email" required>
+                            <label>Phone</label>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Phone"
+                                   id="driver_phone" name="driver_phone" required>
                             <label>Car Mark</label>
-                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Mark" id="carmark" name="carmark" required>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Mark"
+                                   id="car_mark" name="car_mark" required>
                             <label>Car Model</label>
-                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Model" id="carmodel" name="carmodel" required>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Model"
+                                   id="car_model" name="car_model" required>
                             <label>Car Number</label>
-                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Number" id="carnumber" name="carnumber" required>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text"
+                                   placeholder="Enter Car Number" id="car_number" name="car_number" required>
                             <label>Type Bodywork</label>
                             <select class="w3-select" name="type_bodywork" required>
                                 <option value="" disabled selected>Choose your type bodywork</option>
@@ -141,14 +184,40 @@
                             <br>
                             <br>
                             <label>Carrying capacity</label>
-                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Carrying Capacity" id="capacity" name="capacity" required>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text"
+                                   placeholder="Enter Carrying Capacity" id="capacity" name="capacity" required>
                             <label>Max Volume</label>
-                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Max Volume" id="volume" name="volume" required>
+                            <input class="w3-input w3-border w3-margin-bottom" type="text"
+                                   placeholder="Enter Max Volume" id="volume" name="volume" required>
                             <button class="w3-black w3-btn-block w3-section w3-padding">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- LOGIN MODAL -->
+
+<div id="login-modal" class="w3-modal">
+    <div class="w3-modal-content">
+        <header class="w3-container w3-red">
+            <span class="w3-closebtn" id="close-login-modal">&times;</span>
+            <h2>Sign In</h2>
+        </header>
+        <div class="w3-container w3-modal-content">
+            <form class="w3-container" action="login" method="post">
+                <div class="w3-section">
+                    <label>Email</label>
+                    <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="Enter Email"
+                           id="login_email" name="login_email" required>
+                    <label>Password</label>
+                    <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Enter Password"
+                           id="login_password" name="login_password" required>
+                    <button class="w3-black w3-btn-block w3-section w3-padding">Sign In</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -5,5 +5,5 @@
               username="root"
               password="root"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/final?useSSL=false"/>
+              url="jdbc:mysql://localhost:3306/final?useSSL=false&amp;allowMultiQueries=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
 </Context>

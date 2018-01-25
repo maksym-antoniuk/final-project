@@ -1,10 +1,19 @@
 package ua.nure.antoniuk.web.listeners;
 
-import ua.nure.antoniuk.db.transaction.ConnectionManager;
+import ua.nure.antoniuk.db.dao.JourneyDAO;
+import ua.nure.antoniuk.db.dao.PotentialCarDAO;
+import ua.nure.antoniuk.db.dao.PotentialUserDAO;
+import ua.nure.antoniuk.db.dao.UserDAO;
+import ua.nure.antoniuk.db.dao.mysql.JourneyDAOImpl;
+import ua.nure.antoniuk.db.dao.mysql.PotentialCarDAOImpl;
+import ua.nure.antoniuk.db.dao.mysql.PotentialUserDAOImpl;
+import ua.nure.antoniuk.db.dao.mysql.UserDAOImpl;
 import ua.nure.antoniuk.db.transaction.TransactionManager;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import ua.nure.antoniuk.services.*;
+import ua.nure.antoniuk.util.Constants;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,7 +23,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.io.File;
-import java.sql.*;
 
 @WebListener
 public class ServletContextListener implements javax.servlet.ServletContextListener {
@@ -29,25 +37,28 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
     // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
         initLog4j(sce.getServletContext());
-        LOGGER.trace("init context");
-
         TransactionManager transactionManager = new TransactionManager(getDataSource());
 
-        transactionManager.execute(() -> {
-            Connection con = ConnectionManager.getConnection();
-            Statement st = null;
-            ResultSet rs = null;
-            try {
-                st = con.createStatement();
-                rs = st.executeQuery("SELECT * from users");
-                while (rs.next()) {
-                    System.out.println(rs.getString("name"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return 0;
-        });
+        UserDAO userDAO = new UserDAOImpl();
+        PotentialCarDAO potentialCarDAO = new PotentialCarDAOImpl();
+        PotentialUserDAO potentialUserDAO = new PotentialUserDAOImpl();
+        JourneyDAO journeyDAO = new JourneyDAOImpl();
+
+        CarService carService = new CarService(transactionManager, potentialCarDAO);
+        UserService userService = new UserService(transactionManager, potentialUserDAO, potentialCarDAO, userDAO);
+        RegistrationService registrationService = new RegistrationService(userService);
+        LoginService loginService = new LoginService(userService);
+        JourneyService journeyService = new JourneyService(journeyDAO, transactionManager);
+        LogoutService logoutService = new LogoutService();
+
+        sce.getServletContext().setAttribute(Constants.SERVICE_LOGOUT, logoutService);
+        sce.getServletContext().setAttribute(Constants.SERVICE_JOURNEY, journeyService);
+        sce.getServletContext().setAttribute(Constants.SERVICE_LOGIN, loginService);
+        sce.getServletContext().setAttribute(Constants.SERVICE_CAR, carService);
+        sce.getServletContext().setAttribute(Constants.SERVICE_USER, userService);
+        sce.getServletContext().setAttribute(Constants.SERVICE_REGISTRATION, registrationService);
+
+        LOGGER.trace("init context");
     }
 
     private DataSource getDataSource() {

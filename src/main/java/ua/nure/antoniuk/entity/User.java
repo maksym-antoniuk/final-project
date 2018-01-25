@@ -15,7 +15,25 @@ public class User implements Serializable {
     private String imgPath;
     private Calendar dateReg;
     private String email;
+    private String phone;
+    private float salary;
     private Role role;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public float getSalary() {
+        return salary;
+    }
+
+    public void setSalary(float salary) {
+        this.salary = salary;
+    }
 
     public int getId() {
         return id;
@@ -87,18 +105,20 @@ public class User implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return getId() == user.getId() &&
+                Float.compare(user.getSalary(), getSalary()) == 0 &&
                 Objects.equals(getName(), user.getName()) &&
                 Objects.equals(getLastname(), user.getLastname()) &&
-                Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getImgPath(), user.getImgPath()) &&
                 Objects.equals(getDateReg(), user.getDateReg()) &&
                 Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getPhone(), user.getPhone()) &&
                 getRole() == user.getRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getLastname(), getPassword(), getImgPath(), getDateReg(), getEmail(), getRole());
+
+        return Objects.hash(getId(), getName(), getLastname(), getImgPath(), getDateReg(), getEmail(), getPhone(), getSalary(), getRole());
     }
 
     @Override
@@ -107,10 +127,11 @@ public class User implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
-                ", password='" + password + '\'' +
                 ", imgPath='" + imgPath + '\'' +
                 ", dateReg=" + dateReg +
                 ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", salary=" + salary +
                 ", role=" + role.getRole() +
                 '}';
     }

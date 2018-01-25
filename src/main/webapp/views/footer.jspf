@@ -1,5 +1,6 @@
 <footer class="w3-animate-opacity w3-black">
     <br>
     <p class="w3-center w3-text-deep-purple">Antoniuk Maksym Summary Task 4 @2018</p>
+    <p class="w3-center w3-text-deep-purple">Online: <m:online/></p>
     <br>
 </footer>
