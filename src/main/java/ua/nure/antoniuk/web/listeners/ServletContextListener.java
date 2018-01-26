@@ -1,13 +1,7 @@
 package ua.nure.antoniuk.web.listeners;
 
-import ua.nure.antoniuk.db.dao.JourneyDAO;
-import ua.nure.antoniuk.db.dao.PotentialCarDAO;
-import ua.nure.antoniuk.db.dao.PotentialUserDAO;
-import ua.nure.antoniuk.db.dao.UserDAO;
-import ua.nure.antoniuk.db.dao.mysql.JourneyDAOImpl;
-import ua.nure.antoniuk.db.dao.mysql.PotentialCarDAOImpl;
-import ua.nure.antoniuk.db.dao.mysql.PotentialUserDAOImpl;
-import ua.nure.antoniuk.db.dao.mysql.UserDAOImpl;
+import ua.nure.antoniuk.db.dao.*;
+import ua.nure.antoniuk.db.dao.mysql.*;
 import ua.nure.antoniuk.db.transaction.TransactionManager;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -48,9 +42,10 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         PotentialCarDAO potentialCarDAO = new PotentialCarDAOImpl();
         PotentialUserDAO potentialUserDAO = new PotentialUserDAOImpl();
         JourneyDAO journeyDAO = new JourneyDAOImpl();
+        CarDAO carDAO = new CarDAOImpl();
 
-        CarService carService = new CarService(transactionManager, potentialCarDAO);
-        UserService userService = new UserService(transactionManager, potentialUserDAO, potentialCarDAO, userDAO);
+        CarService carService = new CarService(transactionManager, potentialCarDAO, carDAO);
+        UserService userService = new UserService(transactionManager, potentialUserDAO, potentialCarDAO, userDAO, carDAO);
         RegistrationService registrationService = new RegistrationService(userService);
         LoginService loginService = new LoginService(userService);
         JourneyService journeyService = new JourneyService(journeyDAO, transactionManager);

@@ -90,6 +90,8 @@ public abstract class Constants {
     public static final List<String> BODYWORK_LIST = new ArrayList<>();
 
     public static final String ONLINE_USERS = "online_users";
+    public static final String POTENTIAL_MANAGERS = "managers";
+    public static final String POTENTIAL_DRIVERS = "drivers";
 
     //Session attributes
     public static final String SESSION_USER = "user";

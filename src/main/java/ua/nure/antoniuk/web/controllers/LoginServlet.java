@@ -3,6 +3,7 @@ package ua.nure.antoniuk.web.controllers;
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.services.LoginService;
 import ua.nure.antoniuk.util.Constants;
+import ua.nure.antoniuk.util.Mapping;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet(name = "LoginServlet", urlPatterns = Mapping.SERVLET_LOGIN_URL)
 public class LoginServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(LoginServlet.class);
 
@@ -26,10 +27,10 @@ public class LoginServlet extends HttpServlet {
         if (errors.isEmpty()) {
             LOGGER.trace("GOOD LOGIN");
             session.setAttribute(Constants.SESSION_USER, loginService.getByEmail(request));
-            response.sendRedirect("journey");
+            response.sendRedirect(Mapping.SERVLET_JOURNEY);
         } else {
             LOGGER.trace("BAD LOGIN");
-            response.sendRedirect("index.jsp");
+            response.sendRedirect(Mapping.SERVLET_MAIN);
         }
     }
 

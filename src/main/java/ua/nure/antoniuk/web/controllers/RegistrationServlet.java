@@ -5,6 +5,7 @@ import ua.nure.antoniuk.dto.DriverRegDTO;
 import ua.nure.antoniuk.dto.ManagerRegDTO;
 import ua.nure.antoniuk.services.RegistrationService;
 import ua.nure.antoniuk.util.Constants;
+import ua.nure.antoniuk.util.Mapping;
 import ua.nure.antoniuk.util.Role;
 
 import javax.servlet.ServletConfig;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "RegistrationServlet", urlPatterns = "/registration")
+@WebServlet(name = "RegistrationServlet", urlPatterns = Mapping.SERVLET_REGISTRATION_URL)
 public class RegistrationServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(RegistrationServlet.class);
     private RegistrationService registrationService;
@@ -38,7 +39,7 @@ public class RegistrationServlet extends HttpServlet {
             session.setAttribute(Constants.REGISTRATION_DTO_DRIVER, new DriverRegDTO(request));
             LOGGER.trace("user was not register");
         }
-        response.sendRedirect("index.jsp");
+        response.sendRedirect(Mapping.SERVLET_MAIN);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

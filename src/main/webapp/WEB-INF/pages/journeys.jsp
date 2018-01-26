@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="m" uri="WEB-INF/mytag.tld" %>
+<%@ taglib prefix="m" uri="../mytag.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="ma"%>
 <%--
   Created by IntelliJ IDEA.
@@ -13,7 +13,7 @@
 <head>
     <title>JOURNEYS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles/w31.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/w31.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -48,6 +48,6 @@
         </c:forEach>
     </table>
 </div>
-<%@include file="/views/footer.jspf" %>
+<%@include file="/WEB-INF/views/footer.jspf" %>
 </body>
 </html>

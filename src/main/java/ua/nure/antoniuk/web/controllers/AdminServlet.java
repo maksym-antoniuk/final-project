@@ -23,7 +23,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("potentialUsers", userService.getPotentialUsers());
+        //request.setAttribute("potentialUsers", userService.getPotentialUsers());
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 

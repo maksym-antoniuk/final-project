@@ -6,14 +6,14 @@
     <meta charset="utf-8">
     <title>Welcome</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles/start.css">
-    <link rel="stylesheet" href="styles/w31.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/start.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/w31.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
-<%@include file="/views/sign.jspf" %>
+<%@include file="../views/sign.jspf" %>
 
 
 <!-- SHOWCASE -->
@@ -103,7 +103,7 @@
 </section>
 
 <!-- FOOTER -->
-<%@include file="/views/footer.jspf" %>
+
 
 <!-- MODAL -->
 <div id="start-modal" class="w3-modal">
@@ -223,6 +223,6 @@
         </div>
     </div>
 </div>
-<script src="scripts/main.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/main.js"></script>
 </body>
 </html>

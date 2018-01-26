@@ -115,7 +115,7 @@ public class UserDAOImpl implements UserDAO {
         user.setName(resultSet.getNString("name"));
         user.setLastname(resultSet.getNString("surname"));
         user.setEmail(resultSet.getNString("email"));
-        user.setPhone(resultSet.getNString("phone"));
+        user.setPhone(resultSet.getString("phone"));
         user.setRole(Util.getRole(resultSet.getNString("role")));
         user.setSalary(resultSet.getFloat("salary"));
         user.setImgPath(resultSet.getString("photo"));

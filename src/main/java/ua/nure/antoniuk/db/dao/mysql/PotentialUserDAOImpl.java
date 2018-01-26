@@ -6,12 +6,12 @@ import ua.nure.antoniuk.db.transaction.ConnectionManager;
 import ua.nure.antoniuk.entity.PotentialCar;
 import ua.nure.antoniuk.entity.PotentialUser;
 import ua.nure.antoniuk.entity.User;
+import ua.nure.antoniuk.util.Bodywork;
+import ua.nure.antoniuk.util.Role;
 import ua.nure.antoniuk.util.Util;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PotentialUserDAOImpl implements PotentialUserDAO {
     private final static Logger LOGGER = Logger.getLogger(PotentialUserDAOImpl.class);
@@ -20,6 +20,8 @@ public class PotentialUserDAOImpl implements PotentialUserDAO {
     private static final String GET_POTENTIAL_USER_BY_EMAIL = "SELECT * FROM potential_users WHERE email=? LIMIT 1";
     private static final String GET_POTENTIAL_USER_BY_ID = "SELECT * FROM potential_users WHERE id=?";
     private static final String GET_ALL_POTENTIAL_USERS = "SELECT * FROM potential_users";
+    private static final String GET_ALL_POTENTIAL_MANAGERS = "SELECT * FROM potential_users WHERE role = 'manager'";
+    private static final String GET_ALL_POTENTIAL_DRIVERS = "SELECT potential_users.id, potential_users.name, potential_users.surname, potential_users.email, potential_users.phone, potential_cars.id, potential_cars.number, potential_cars.mark, potential_cars.model, potential_cars.type_bodywork, potential_cars.max_weight, potential_cars.max_volume FROM potential_users INNER JOIN potential_cars ON potential_users.id = potential_cars.potential_users_id WHERE potential_users.role = 'driver'";
 
     @Override
     public Optional<PotentialUser> getByEmail(String email) {
@@ -39,13 +41,44 @@ public class PotentialUserDAOImpl implements PotentialUserDAO {
     }
 
     @Override
-    public List<PotentialUser> getAll() {
+    public List<PotentialUser> getManagers() {
         List<PotentialUser> users = new ArrayList<>();
         Connection connection = ConnectionManager.getConnection();
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(GET_ALL_POTENTIAL_USERS);
+            ResultSet resultSet = statement.executeQuery(GET_ALL_POTENTIAL_MANAGERS);
+
             while (resultSet.next()) {
                 users.add(extractPotentialUser(resultSet));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return users;
+    }
+
+    @Override
+    public Map<PotentialUser, PotentialCar> getDrivers() {
+        Map<PotentialUser, PotentialCar> users = new LinkedHashMap<>();
+        Connection connection = ConnectionManager.getConnection();
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(GET_ALL_POTENTIAL_DRIVERS);
+            while (resultSet.next()) {
+                PotentialUser potentialUser = new PotentialUser();
+                potentialUser.setId(resultSet.getInt(1));
+                potentialUser.setName(resultSet.getString(2));
+                potentialUser.setLastname(resultSet.getString(3));
+                potentialUser.setEmail(resultSet.getString(4));
+                potentialUser.setPhone(resultSet.getString(5));
+                PotentialCar potentialCar = new PotentialCar();
+                potentialCar.setId(resultSet.getInt(6));
+                potentialCar.setNumber(resultSet.getString(7));
+                potentialCar.setMark(resultSet.getString(8));
+                potentialCar.setModel(resultSet.getString(9));
+                potentialCar.setBodywork(Bodywork.valueOf(resultSet.getString(10).toUpperCase()));
+                potentialCar.setMaxWeight(resultSet.getFloat(11));
+                potentialCar.setMaxVolume(resultSet.getFloat(12));
+                users.put(potentialUser, potentialCar);
             }
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -109,7 +142,7 @@ public class PotentialUserDAOImpl implements PotentialUserDAO {
         user.setLastname(resultSet.getString("surname"));
         user.setEmail(resultSet.getString("email"));
         user.setPhone(resultSet.getString("phone"));
-        user.setRole(Util.getRole(resultSet.getString("role")));
+        user.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
         user.setId(resultSet.getInt("id"));
         return user;
     }

@@ -9,6 +9,10 @@
         version="3.0">
   <display-name>Archetype Created Web Application</display-name>
 
+  <welcome-file-list>
+    <welcome-file>main</welcome-file>
+  </welcome-file-list>
+
   <resource-ref>
     <res-ref-name>jdbc/appname</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
