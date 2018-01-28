@@ -1,8 +1,14 @@
 package ua.nure.antoniuk.util;
 
+import ua.nure.antoniuk.entity.User;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,5 +69,44 @@ public abstract class Util {
             default:
                 return Bodywork.CONTAINER;
         }
+    }
+
+    public static void sendPassword(User user) {
+        new Thread(() -> {
+            final String username = "authobase.summarytask4@gmail.com";
+            final String password = "123qwerty456";
+
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+
+            Session session = Session.getInstance(props,
+                    new Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+
+            try {
+
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(username));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+                message.setSubject("Registration <mine>SHOP");
+                message.setText("Hi "+user.getName() + " ,"+System.lineSeparator()+
+                        "Thank you for registration your profile. " + System.lineSeparator() +
+                        "You can buy different products on our <mine>SHOP."+System.lineSeparator()+
+                        "<a href=\"localhost:8080/Base/\">Click here</a> if you want go to shop"+System.lineSeparator()+
+                        "Created for test final project.");
+
+                Transport.send(message);
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 }

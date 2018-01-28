@@ -22,10 +22,37 @@ function post(path, params, method) {
     form.submit();
 }
 
-function addUser(path, id) {
-    post(path, {add: id});
+function addManager(path, id) {
+    var sal = document.getElementById(id.concat('_salary')).value;
+    post(path, {addManager: id, salary: sal});
 }
 
-function cancelUser(id) {
+function addDriver(path, id) {
+    post(path, {addDriver: id});
+}
+
+function cancelUser(path, id) {
     post(path, {cancel: id});
+}
+
+function hide(id) {
+    var str = id.concat('_man');
+    var elem = document.getElementById(str);
+    if(elem.style.display === 'none'){
+        elem.style.display = 'block';
+
+    } else if(elem.style.display === 'block'){
+        elem.style.display = 'none';
+    }
+
+}
+
+function salaryManager(id) {
+    var str = id.concat('_man');
+    var elem = document.getElementById(str);
+    if (elem.className.indexOf("w3-show") === -1) {
+        elem.className += " w3-show";
+    } else {
+        elem.className = elem.className.replace(" w3-show", "");
+    }
 }

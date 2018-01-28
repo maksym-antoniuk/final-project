@@ -16,4 +16,6 @@ public interface PotentialUserDAO extends CRUD<PotentialUser> {
     List<PotentialUser> getManagers();
 
     Map<PotentialUser, PotentialCar> getDrivers();
+
+    boolean isExist(String email);
 }

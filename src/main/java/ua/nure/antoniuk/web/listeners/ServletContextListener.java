@@ -51,6 +51,9 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         JourneyService journeyService = new JourneyService(journeyDAO, transactionManager);
         LogoutService logoutService = new LogoutService();
 
+        List<User> onlineUsers = new ArrayList<>();
+
+        sce.getServletContext().setAttribute(Constants.ONLINE_USERS, onlineUsers);
         sce.getServletContext().setAttribute(Constants.SERVICE_LOGOUT, logoutService);
         sce.getServletContext().setAttribute(Constants.SERVICE_JOURNEY, journeyService);
         sce.getServletContext().setAttribute(Constants.SERVICE_LOGIN, loginService);

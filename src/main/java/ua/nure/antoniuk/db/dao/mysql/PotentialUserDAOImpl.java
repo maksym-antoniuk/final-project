@@ -22,6 +22,7 @@ public class PotentialUserDAOImpl implements PotentialUserDAO {
     private static final String GET_ALL_POTENTIAL_USERS = "SELECT * FROM potential_users";
     private static final String GET_ALL_POTENTIAL_MANAGERS = "SELECT * FROM potential_users WHERE role = 'manager'";
     private static final String GET_ALL_POTENTIAL_DRIVERS = "SELECT potential_users.id, potential_users.name, potential_users.surname, potential_users.email, potential_users.phone, potential_cars.id, potential_cars.number, potential_cars.mark, potential_cars.model, potential_cars.type_bodywork, potential_cars.max_weight, potential_cars.max_volume FROM potential_users INNER JOIN potential_cars ON potential_users.id = potential_cars.potential_users_id WHERE potential_users.role = 'driver'";
+    private static final String DELETE_POTENTIAL_USER = "DELETE FROM potential_users WHERE id = ?";
 
     @Override
     public Optional<PotentialUser> getByEmail(String email) {
@@ -110,6 +111,23 @@ public class PotentialUserDAOImpl implements PotentialUserDAO {
     }
 
     @Override
+    public boolean isExist(String email) {
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_POTENTIAL_USER_BY_EMAIL)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    @Override
     public Optional<PotentialUser> read(int id) {
         Connection connection = ConnectionManager.getConnection();
         Optional<PotentialUser> optionalUser = Optional.empty();
@@ -133,7 +151,18 @@ public class PotentialUserDAOImpl implements PotentialUserDAO {
 
     @Override
     public boolean delete(PotentialUser entity) {
-        return false;
+        Connection connection = ConnectionManager.getConnection();
+        boolean result = false;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_POTENTIAL_USER)) {
+            preparedStatement.setInt(1, entity.getId());
+            if (preparedStatement.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     private PotentialUser extractPotentialUser(ResultSet resultSet) throws SQLException {

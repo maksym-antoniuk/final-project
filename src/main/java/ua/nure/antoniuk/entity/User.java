@@ -3,6 +3,7 @@ package ua.nure.antoniuk.entity;
 import ua.nure.antoniuk.util.Role;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -75,8 +76,8 @@ public class User implements Serializable {
         this.imgPath = imgPath;
     }
 
-    public Calendar getDateReg() {
-        return dateReg;
+    public String getDateReg() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateReg.getTime());
     }
 
     public void setDateReg(Calendar dateReg) {

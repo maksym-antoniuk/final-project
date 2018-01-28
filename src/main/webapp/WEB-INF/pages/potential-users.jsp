@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" uri="../mytag.tld" %>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="ma"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="ma" %>
 <%--
   Created by IntelliJ IDEA.
   User: maxim
@@ -21,8 +21,7 @@
 <!-- NAVIGATION -->
 <ma:nav/>
 
-<form style="display: none" action="potential-user" method="post" id="add_user"><input type="hidden" value="add"/></form>
-<form style="display: none" action="potential-user" method="post" id="cancel_user"><input type="hidden" value="cancel"/></form>
+
 <div class="w3-container" id="mytabs">
     <h2>Potential Users</h2>
 
@@ -35,76 +34,89 @@
     <div id="manager" class="w3-container w3-border role">
         <h2>Manager</h2>
         <div class="w3-container">
-            <form method="post" action="registration">
-                <div class="w3-section w3-responsive">
-                    <table class="w3-table-all">
-                        <tr>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <c:forEach items="${requestScope.managers}" var="manager">
-                            <tr>
-                                <td>${manager.name}</td>
-                                <td>${manager.lastname}</td>
-                                <td>${manager.email}</td>
-                                <td>${manager.phone}</td>
-                                <td><i class="fa fa-plus w3-text-green" onclick="addUser('${pageContext.request.contextPath}/potential-user', '${manager.id}');"></i> </td>
-                                <td><i class="fa fa-minus w3-text-red" onclick="cancelUser('${pageContext.request.contextPath}/potential-user', '${manager.id}');"></i> </td>
-                            </tr>
+            <div class="w3-section w3-responsive">
+                <table class="w3-table-all">
+                    <tr class="w3-red">
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <c:forEach items="${requestScope.managers}" var="manager">
+                    <tr>
+                        <td>${manager.name}</td>
+                        <td>${manager.lastname}</td>
+                        <td>${manager.email}</td>
+                        <td>${manager.phone}</td>
+                        <td>
+                            <div class="w3-dropdown-click">
+                                <i class="fa fa-plus w3-text-green" onclick="salaryManager('${manager.id}')"></i>
+                                <div id="${manager.id}_man"
+                                     class="w3-dropdown-content w3-bar-block w3-card-12 w3-animate-zoom">
+                                    <input class="w3-row w3-input w3-border w3-half" placeholder="Salary"
+                                           id="${manager.id}_salary" value="0">
+                                    <button class="w3-row w3-white w3-btn-block w3-padding w3-quarter"
+                                            onclick="addManager('${pageContext.request.contextPath}/potential-user', '${manager.id}');">
+                                        <i class="fa fa-toggle-right w3-large w3-text-green"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                        <td><i class="fa fa-minus w3-text-red"
+                               onclick="cancelUser('${pageContext.request.contextPath}/potential-user', '${manager.id}');"></i>
+                        </td>
                         </c:forEach>
-                    </table>
-                </div>
-            </form>
+                </table>
+            </div>
         </div>
     </div>
 
     <div id="driver" class="w3-container w3-border role" style="display: none">
         <h2>Driver</h2>
         <div class="w3-container">
-            <form method="post" action="registration">
-                <div class="w3-section w3-responsive">
-                    <table class="w3-table-all">
+            <div class="w3-section w3-responsive">
+                <table class="w3-table-all">
+                    <tr class="w3-red">
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Car Number</th>
+                        <th>Car Mark</th>
+                        <th>Car Model</th>
+                        <th>Bodywork</th>
+                        <th>Capacity</th>
+                        <th>Volume</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <c:forEach items="${requestScope.drivers}" var="driver">
                         <tr>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Car Number</th>
-                            <th>Car Mark</th>
-                            <th>Car Model</th>
-                            <th>Bodywork</th>
-                            <th>Capacity</th>
-                            <th>Volume</th>
-                            <th></th>
-                            <th></th>
+                            <td>${driver.key.name}</td>
+                            <td>${driver.key.lastname}</td>
+                            <td>${driver.key.email}</td>
+                            <td>${driver.key.phone}</td>
+                            <td>${driver.value.number}</td>
+                            <td>${driver.value.mark}</td>
+                            <td>${driver.value.model}</td>
+                            <td>${driver.value.bodywork.bodywork}</td>
+                            <td>${driver.value.maxWeight}</td>
+                            <td>${driver.value.maxVolume}</td>
+                            <td><i class="fa fa-plus w3-text-green"
+                                   onclick="addDriver('${pageContext.request.contextPath}/potential-user', '${driver.key.id}');"></i>
+                            </td>
+                            <td><i class="fa fa-minus w3-text-red"
+                                   onclick="cancelUser('${pageContext.request.contextPath}/potential-user', '${driver.key.id}');"></i>
+                            </td>
                         </tr>
-                        <c:forEach items="${requestScope.drivers}" var="driver">
-                            <tr>
-                                <td>${driver.key.name}</td>
-                                <td>${driver.key.lastname}</td>
-                                <td>${driver.key.email}</td>
-                                <td>${driver.key.phone}</td>
-                                <td>${driver.value.number}</td>
-                                <td>${driver.value.mark}</td>
-                                <td>${driver.value.model}</td>
-                                <td>${driver.value.bodywork.bodywork}</td>
-                                <td>${driver.value.maxWeight}</td>
-                                <td>${driver.value.maxVolume}</td>
-                                <td><i class="fa fa-plus w3-text-green" onclick="addUser('${pageContext.request.contextPath}/potential-user', '${driver.key.id}');"></i> </td>
-                                <td><i class="fa fa-minus w3-text-red" onclick="cancelUser('${pageContext.request.contextPath}/potential-user', '${driver.key.id}');"></i> </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                </div>
-            </form>
+                    </c:forEach>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
+<%@include file="/WEB-INF/views/footer.jspf" %>
 <script src="${pageContext.request.contextPath}/scripts/main.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/register_potential_user.js"></script>
 </body>

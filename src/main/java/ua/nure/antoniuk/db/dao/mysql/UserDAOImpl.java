@@ -7,16 +7,19 @@ import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.util.Util;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDAOImpl implements UserDAO {
     private final static Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    private static final String ADD_USER = "INSERT INTO users (name, surname, email, password, role, photo, phone) VALUES (?,?,?,?,?,?,?)";
+    private static final String ADD_USER = "INSERT INTO users (name, surname, email, password, role, salary, phone) VALUES (?,?,?,?,?,?,?)";
     private static final String GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ? LIMIT 1";
     private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String UPDATE_USER = "UPDATE users SET email=?, phone=?, photo=?, password=?, salary=? WHERE id=?";
     private static final String CALL_TRY_TO_LOGIN = "{? = call try_to_login(?,?)}";
+    private static final String GET_ALL_USERS = "SELECT * FROM users";
 
     @Override
     public Optional<User> getByEmail(String email) {
@@ -50,6 +53,39 @@ public class UserDAOImpl implements UserDAO {
             throw new RuntimeException(e);
         }
         return code;
+    }
+
+    @Override
+    public boolean isExist(String email) {
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_EMAIL)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+        Connection connection = ConnectionManager.getConnection();
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(GET_ALL_USERS);
+            while (resultSet.next()) {
+                users.add(extractUser(resultSet));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return users;
     }
 
     @Override
@@ -120,7 +156,7 @@ public class UserDAOImpl implements UserDAO {
         user.setSalary(resultSet.getFloat("salary"));
         user.setImgPath(resultSet.getString("photo"));
         user.setId(resultSet.getInt("id"));
-        user.setDateReg(Util.getCalendarByDate(resultSet.getDate("datareg")));
+        user.setDateReg(Util.getCalendarByDate(resultSet.getTimestamp("datareg")));
         return user;
     }
 
@@ -130,7 +166,7 @@ public class UserDAOImpl implements UserDAO {
         preparedStatement.setString(3, user.getEmail());
         preparedStatement.setString(4, Util.hash(user.getPassword()));
         preparedStatement.setString(5, user.getRole().getRole());
-        preparedStatement.setString(6, user.getImgPath());
+        preparedStatement.setFloat(6, user.getSalary());
         preparedStatement.setString(7, user.getPhone());
     }
 }

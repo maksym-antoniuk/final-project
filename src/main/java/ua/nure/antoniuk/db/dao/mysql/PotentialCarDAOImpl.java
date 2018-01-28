@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.nure.antoniuk.db.dao.PotentialCarDAO;
 import ua.nure.antoniuk.db.transaction.ConnectionManager;
 import ua.nure.antoniuk.entity.PotentialCar;
+import ua.nure.antoniuk.entity.PotentialUser;
 import ua.nure.antoniuk.util.Bodywork;
 import ua.nure.antoniuk.util.Extractor;
 import ua.nure.antoniuk.util.StringUtil;
@@ -19,6 +20,7 @@ public class PotentialCarDAOImpl implements PotentialCarDAO {
     private final static Logger LOGGER = Logger.getLogger(PotentialCarDAOImpl.class);
     private static final String ADD_POTENTIAL_CAR = "INSERT INTO potential_cars (number, photo, max_weight, max_volume, users_id, potential_users_id, type_bodywork, mark, model) VALUES (?,?,?,?,?,?,?,?,?)";
     private static final String GET_BY_ID_DRIVER = "SELECT * FROM potential_cars WHERE potential_users_id = ? LIMIT 1";
+    private static final String DELETE_POTENTIAL_CAR = "DELETE FROM potential_cars WHERE potential_users_id = ?";
 
     @Override
     public int create(PotentialCar entity) {
@@ -58,7 +60,18 @@ public class PotentialCarDAOImpl implements PotentialCarDAO {
 
     @Override
     public boolean delete(PotentialCar entity) {
-        return false;
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_POTENTIAL_CAR)) {
+            preparedStatement.setInt(1, entity.getIdPotentialUser());
+            if (preparedStatement.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     @Override
@@ -76,6 +89,23 @@ public class PotentialCarDAOImpl implements PotentialCarDAO {
             throw new RuntimeException(e);
         }
         return car;
+    }
+
+    @Override
+    public boolean isExistCarByIdPotentialUser(PotentialUser user) {
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID_DRIVER)) {
+            preparedStatement.setInt(1, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     public PotentialCar extract(ResultSet value) throws SQLException {

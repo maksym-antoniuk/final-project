@@ -36,7 +36,8 @@ public class UserService {
     }
 
     public boolean isExist(String email) {
-        return false;
+        return transactionManager.execute(() -> userDAO.isExist(email) || potentialUserDAO.isExist(email));
+
     }
 
     public int create(PotentialUser user) {
@@ -60,6 +61,14 @@ public class UserService {
         int id = transactionManager.execute(() -> userDAO.create(user));
         user.setId(id);
         return id;
+    }
+
+    public int create(User user, PotentialUser potentialUser) {
+        return transactionManager.execute(() -> {
+            int userId = userDAO.create(user);
+            potentialUserDAO.delete(potentialUser);
+            return userId;
+        });
     }
 
     public int create(User user, Car car, PotentialUser potentialUser, PotentialCar potentialCar) {
@@ -96,8 +105,6 @@ public class UserService {
         return transactionManager.executeWithoutTransaction(() -> potentialUserDAO.getDrivers());
     }
 
-
-
     public User potentialUserToUser(PotentialUser potentialUser) {
         User user = new User();
         user.setEmail(potentialUser.getEmail());
@@ -108,4 +115,17 @@ public class UserService {
         return user;
     }
 
+    public void cancel(PotentialUser potentialUser) {
+        transactionManager.execute(() ->{
+            if (potentialCarDAO.isExistCarByIdPotentialUser(potentialUser)) {
+                potentialCarDAO.delete(potentialCarDAO.getByIdDriver(potentialUser.getId()).get());
+            }
+            potentialUserDAO.delete(potentialUser);
+            return 0;
+        });
+    }
+
+    public List<User> getUsers() {
+        return transactionManager.executeWithoutTransaction(() -> userDAO.getUsers());
+    }
 }

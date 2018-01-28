@@ -1,12 +1,16 @@
 package ua.nure.antoniuk.web.controllers;
 
 import org.apache.log4j.Logger;
+import ua.nure.antoniuk.entity.Car;
 import ua.nure.antoniuk.entity.PotentialCar;
 import ua.nure.antoniuk.entity.PotentialUser;
+import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.services.CarService;
 import ua.nure.antoniuk.services.UserService;
 import ua.nure.antoniuk.util.Constants;
 import ua.nure.antoniuk.util.Mapping;
+import ua.nure.antoniuk.util.StringUtil;
+import ua.nure.antoniuk.util.Util;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -26,10 +30,31 @@ public class PotentialUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.trace("Potential user servlet POST");
         LOGGER.trace(request.getParameter("add"));
-        if (!Objects.isNull(request.getParameter("add"))) {
-            PotentialUser potentialUser = userService.getPotentialUserById(Integer.parseInt(request.getParameter("add")));
+        if (!Objects.isNull(request.getParameter("addManager"))) {
+            PotentialUser potentialUser = userService.getPotentialUserById(Integer.parseInt(request.getParameter("addManager")));
+            User user = userService.potentialUserToUser(potentialUser);
+            String pass = StringUtil.generatePassword();
+            user.setPassword(pass);
+            LOGGER.trace(pass);
+            user.setSalary(Float.parseFloat(request.getParameter("salary")));
+            userService.create(user, potentialUser);
+            Util.sendPassword(user);
+        } else if (!Objects.isNull(request.getParameter("addDriver"))) {
+            PotentialUser potentialUser = userService.getPotentialUserById(Integer.parseInt(request.getParameter("addDriver")));
+            User user = userService.potentialUserToUser(potentialUser);
+            user.setSalary(0);
+            String pass = StringUtil.generatePassword();
+            user.setPassword(pass);
+            LOGGER.trace(pass);
             PotentialCar potentialCar = carService.getPotentialCarByIdDriver(potentialUser.getId());
-
+            potentialCar.setIdPotentialUser(potentialUser.getId());
+            Car car = carService.potentialCarToCar(potentialCar);
+            LOGGER.trace(car);
+            userService.create(user, car, potentialUser, potentialCar);
+            Util.sendPassword(user);
+        } else if (!Objects.isNull(request.getParameter("cancel"))) {
+            PotentialUser potentialUser = userService.getPotentialUserById(Integer.parseInt(request.getParameter("cancel")));
+            userService.cancel(potentialUser);
         }
         request.getParameter("cancel");
         response.sendRedirect(Mapping.SERVLET_POTENTIAL_USER);

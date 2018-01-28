@@ -1,6 +1,11 @@
 package ua.nure.antoniuk.util;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+
+import java.nio.charset.Charset;
 import java.util.Objects;
+
 
 public abstract class StringUtil {
 
@@ -10,6 +15,14 @@ public abstract class StringUtil {
 
     public static String stringOrEmptyString(String string) {
         return stringOrDefault(string, "");
+    }
+
+    public static String generatePassword() {
+        return RandomStringUtils.random(7, true, true);
+    }
+
+    public static String MD5(String password) {
+        return DigestUtils.md5Hex(password);
     }
 
     private StringUtil(){
