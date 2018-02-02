@@ -296,6 +296,7 @@
 
 <%@include file="/WEB-INF/views/portfolio.jspf" %>
 
+<script src="${pageContext.request.contextPath}/scripts/global.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/journey.js"></script>
 
 <%@include file="/WEB-INF/views/footer.jspf" %>

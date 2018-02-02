@@ -15,6 +15,7 @@ public abstract class Mapping {
     public static final String SERVLET_CAR = "car";
     public static final String SERVLET_POTENTIAL_CAR = "potential-car";
     public static final String SERVLET_CAR_JOURNEY = "car-journey";
+    public static final String SERVLET_GARAGE = "garage";
 
     public static final String SERVLET_MAIN_URL = "/" + SERVLET_MAIN;
     public static final String SERVLET_LOGIN_URL = "/" + SERVLET_LOGIN;
@@ -27,6 +28,7 @@ public abstract class Mapping {
     public static final String SERVLET_CAR_URL = "/" + SERVLET_CAR;
     public static final String SERVLET_POTENTIAL_CAR_URL = "/" + SERVLET_POTENTIAL_CAR;
     public static final String SERVLET_CAR_JOURNEY_URL = "/" + SERVLET_CAR_JOURNEY;
+    public static final String SERVLET_GARAGE_URL = "/" + SERVLET_GARAGE;
 
     /**
      * This constants use for mapping jsp files
@@ -37,6 +39,7 @@ public abstract class Mapping {
     public static final String JSP_USERS = "/WEB-INF/pages/users.jsp";
     public static final String JSP_CARS = "/WEB-INF/pages/cars.jsp";
     public static final String JSP_PORTFOLIO = "/WEB-INF/pages/portfolio.jsp";
+    public static final String JSP_GARAGE = "/WEB-INF/pages/garage.jsp";
 
     /**
      * @exception UnsupportedOperationException
@@ -44,6 +47,6 @@ public abstract class Mapping {
      */
 
     private Mapping() {
-        throw new UnsupportedOperationException("You cant create instance of this class");
+        throw new UnsupportedOperationException("You can't create instance of this class");
     }
 }

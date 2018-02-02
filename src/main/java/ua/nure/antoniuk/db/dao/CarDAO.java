@@ -1,5 +1,6 @@
 package ua.nure.antoniuk.db.dao;
 
+import ua.nure.antoniuk.dto.CarGarageDTO;
 import ua.nure.antoniuk.entity.Car;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface CarDAO extends CRUD<Car> {
     boolean isOnRoad(int carid);
 
     boolean isRegisteredOnJourney(int carid);
+
+    List<CarGarageDTO> getGarageById(int id);
 }

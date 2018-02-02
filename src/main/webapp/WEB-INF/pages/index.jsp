@@ -27,6 +27,13 @@
         <button class="w3-button w3-red w3-large w3-opacity" id="showcaseButton">Start Here</button>
     </div>
 </section>
+<section class="section w3-red w3-hover-opacity">
+    <div class="w3-container w3-center">
+        <i class="fa fa-home"></i>
+        <h2>Welcome Home</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+</section>
 
 <!-- ABOUT -->
 <section id="about" class="section">
@@ -108,7 +115,7 @@
 <!-- MODAL -->
 <div id="start-modal" class="w3-modal"
      <c:if test="${requestScope.isRegister != null}">style="display: block" </c:if>>
-    <div class="w3-modal-content" id="modal-content">
+    <div class="w3-modal-content w3-animate-bottom" id="modal-content">
         <header class="w3-container w3-red">
             <span class="w3-closebtn" id="closeModal">&times;</span>
             <h2>Get Started</h2>
@@ -231,7 +238,7 @@
 
 <div id="login-modal" class="w3-modal"
      <c:if test="${requestScope.isLogin != null}">style="display: block" </c:if> >
-    <div class="w3-modal-content">
+    <div class="w3-modal-content w3-animate-top">
         <header class="w3-container w3-red">
             <span class="w3-closebtn" id="close-login-modal">&times;</span>
             <h2>Sign In</h2>

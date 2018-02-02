@@ -3,6 +3,7 @@ package ua.nure.antoniuk.db.dao.mysql;
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.db.dao.CarDAO;
 import ua.nure.antoniuk.db.transaction.ConnectionManager;
+import ua.nure.antoniuk.dto.CarGarageDTO;
 import ua.nure.antoniuk.entity.Car;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.exceptions.DBException;
@@ -24,6 +25,12 @@ public class CarDAOImpl implements CarDAO {
     private static final String IS_ON_ROAD = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id INNER JOIN journeys j ON car.journeys_id = j.id WHERE car.cars_id = ? AND car.accept = 'yes' AND j.status = 'on_process'";
     private static final String GET_CAR_BY_ID = "SELECT * FROM cars WHERE id = ?";
     private static final String GET_JOURNEY_CARS = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id WHERE car.journeys_id = ?";
+    private static final String GET_GARAGE_BY_ID = "SELECT c.id, c.number, c.mark, c.model, c.photo, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, count(jc.accept), 0 FROM final.cars c\n" +
+            "LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'yes' AND c.id_driver = ? GROUP BY jc.cars_id\n" +
+            "UNION\n" +
+            "SELECT c.id, c.number, c.mark, c.model, c.photo, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, count(jc.accept) FROM final.cars c\n" +
+            "LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'no' AND c.id_driver = ? GROUP BY jc.cars_id;";
+    private static final String UPDATE_CAR = "UPDATE cars SET max_weight = ?, max_volume = ?, type_bodywork = ?, status = ?, photo = ? WHERE id = ?";
 
     @Override
     public int create(Car entity) {
@@ -68,7 +75,23 @@ public class CarDAOImpl implements CarDAO {
 
     @Override
     public boolean update(Car entity) {
-        return false;
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CAR)) {
+            preparedStatement.setFloat(1, entity.getMaxWeight());
+            preparedStatement.setFloat(2, entity.getMaxVolume());
+            preparedStatement.setString(3, entity.getBodywork().getBodywork());
+            preparedStatement.setString(4, entity.getStatus().getStatus());
+            preparedStatement.setString(5, entity.getPathImg());
+            preparedStatement.setInt(6, entity.getId());
+            if (preparedStatement.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new DBException("Update car " + entity.getId(), e);
+        }
+        return result;
     }
 
     @Override
@@ -150,8 +173,7 @@ public class CarDAOImpl implements CarDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(IS_ON_ROAD)) {
             preparedStatement.setInt(1, carid);
             if (preparedStatement.executeQuery().next()) {
-                result = true;
-            }
+                result = true; }
         } catch (SQLException e) {
             LOGGER.error(e);
             throw new RuntimeException(e);
@@ -162,6 +184,24 @@ public class CarDAOImpl implements CarDAO {
     @Override
     public boolean isRegisteredOnJourney(int carid) {
         return false;
+    }
+
+    @Override
+    public List<CarGarageDTO> getGarageById(int id) {
+        List<CarGarageDTO> cars = new ArrayList<>();
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_GARAGE_BY_ID)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                cars.add(new CarGarageDTO().setCar(extract(resultSet)).setCountPerformed(resultSet.getInt(11)).setCountSubscribed(resultSet.getInt(11) + resultSet.getInt(12)));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new DBException("Get Garage By id", e);
+        }
+        return cars;
     }
 
     private Car extract(ResultSet resultSet) throws SQLException {
