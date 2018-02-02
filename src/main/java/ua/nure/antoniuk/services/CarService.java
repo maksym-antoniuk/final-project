@@ -6,6 +6,9 @@ import ua.nure.antoniuk.db.transaction.TransactionManager;
 import ua.nure.antoniuk.entity.Car;
 import ua.nure.antoniuk.entity.PotentialCar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CarService {
     private TransactionManager transactionManager;
     private PotentialCarDAO potentialCarDAO;
@@ -38,5 +41,17 @@ public class CarService {
         car.setMaxWeight(potentialCar.getMaxWeight());
         car.setPathImg(potentialCar.getPathImg());
         return car;
+    }
+
+    public List<Car> getAllCars() {
+        return transactionManager.executeWithoutTransaction(() -> carDAO.getAllCars());
+    }
+
+    public List<Car> getDriversCars(int id) {
+        return transactionManager.executeWithoutTransaction(() -> carDAO.getCarsByIdDriver(id));
+    }
+
+    public List<Car> getJourneyCars(int journey) {
+        return transactionManager.executeWithoutTransaction(() -> carDAO.getCarsByIdJourney(journey));
     }
 }

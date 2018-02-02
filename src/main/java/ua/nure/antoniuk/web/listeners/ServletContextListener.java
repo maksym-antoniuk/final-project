@@ -9,6 +9,7 @@ import org.apache.log4j.PropertyConfigurator;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.services.*;
 import ua.nure.antoniuk.util.Constants;
+import ua.nure.antoniuk.util.StringUtil;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -48,7 +49,7 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         UserService userService = new UserService(transactionManager, potentialUserDAO, potentialCarDAO, userDAO, carDAO);
         RegistrationService registrationService = new RegistrationService(userService);
         LoginService loginService = new LoginService(userService);
-        JourneyService journeyService = new JourneyService(journeyDAO, transactionManager);
+        JourneyService journeyService = new JourneyService(journeyDAO, transactionManager, carDAO, userDAO);
         LogoutService logoutService = new LogoutService();
 
         List<User> onlineUsers = new ArrayList<>();
@@ -62,6 +63,7 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         sce.getServletContext().setAttribute(Constants.SERVICE_REGISTRATION, registrationService);
 
         LOGGER.trace("init context");
+        LOGGER.trace(StringUtil.MD5("root"));
     }
 
     private DataSource getDataSource() {

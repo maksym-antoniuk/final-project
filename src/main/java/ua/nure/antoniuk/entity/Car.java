@@ -1,6 +1,7 @@
 package ua.nure.antoniuk.entity;
 
 import ua.nure.antoniuk.util.Bodywork;
+import ua.nure.antoniuk.util.StatusCar;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,6 +17,15 @@ public class Car implements Serializable {
     private float maxWeight;
     private float maxVolume;
     private int idDriver;
+    private StatusCar status;
+
+    public StatusCar getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusCar status) {
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -102,13 +112,14 @@ public class Car implements Serializable {
                 Objects.equals(getMark(), car.getMark()) &&
                 Objects.equals(getModel(), car.getModel()) &&
                 Objects.equals(getPathImg(), car.getPathImg()) &&
-                getBodywork() == car.getBodywork();
+                getBodywork() == car.getBodywork() &&
+                getStatus() == car.getStatus();
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getNumber(), getMark(), getModel(), getPathImg(), getBodywork(), getMaxWeight(), getMaxVolume(), getIdDriver());
+        return Objects.hash(getId(), getNumber(), getMark(), getModel(), getPathImg(), getBodywork(), getMaxWeight(), getMaxVolume(), getIdDriver(), getStatus());
     }
 
     @Override
@@ -123,6 +134,7 @@ public class Car implements Serializable {
                 ", maxWeight=" + maxWeight +
                 ", maxVolume=" + maxVolume +
                 ", idDriver=" + idDriver +
+                ", status=" + status.getStatus() +
                 '}';
     }
 }

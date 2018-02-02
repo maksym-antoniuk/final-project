@@ -34,7 +34,7 @@
     <div id="manager" class="w3-container w3-border role">
         <h2>Manager</h2>
         <div class="w3-container">
-            <div class="w3-section w3-responsive">
+            <div class="w3-section">
                 <table class="w3-table-all">
                     <tr class="w3-red">
                         <th>Name</th>

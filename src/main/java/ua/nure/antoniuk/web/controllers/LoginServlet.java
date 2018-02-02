@@ -1,9 +1,13 @@
 package ua.nure.antoniuk.web.controllers;
 
 import org.apache.log4j.Logger;
+import ua.nure.antoniuk.entity.User;
+import ua.nure.antoniuk.services.CarService;
 import ua.nure.antoniuk.services.LoginService;
+import ua.nure.antoniuk.util.Attributes;
 import ua.nure.antoniuk.util.Constants;
 import ua.nure.antoniuk.util.Mapping;
+import ua.nure.antoniuk.util.Role;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,27 +24,40 @@ public class LoginServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(LoginServlet.class);
 
     private LoginService loginService;
+    private CarService carService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String> errors = loginService.validate(request);
+
         HttpSession session = request.getSession();
         if (errors.isEmpty()) {
             LOGGER.trace("GOOD LOGIN");
             session.setAttribute(Constants.SESSION_USER, loginService.getByEmail(request));
+            if (((User) session.getAttribute(Attributes.SESSION_USER)).getRole().equals(Role.DRIVER)) {
+                session.setAttribute(Attributes.SESSION_CARS, carService.getDriversCars(((User) session.getAttribute(Attributes.SESSION_USER)).getId()));
+            }
             response.sendRedirect(Mapping.SERVLET_JOURNEY);
         } else {
             LOGGER.trace("BAD LOGIN");
-            response.sendRedirect(Mapping.SERVLET_MAIN);
+            session.setAttribute("loginErrors",errors);
+            response.sendRedirect(Mapping.SERVLET_LOGIN);
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
+        if(session.getAttribute("loginErrors") != null){
+            request.setAttribute("loginErrors",session.getAttribute("loginErrors"));
+            session.removeAttribute("loginErrors");
+        }
+        request.setAttribute("isLogin","");
+        request.getRequestDispatcher(Mapping.SERVLET_MAIN).forward(request,response);
     }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         loginService = (LoginService) config.getServletContext().getAttribute(Constants.SERVICE_LOGIN);
+        carService = (CarService) config.getServletContext().getAttribute(Constants.SERVICE_CAR);
         LOGGER.trace("Login servlet init");
     }
 }

@@ -4,5 +4,5 @@
     <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-car w3-xxlarge"></i></a>
     <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-id-card w3-xxlarge"></i></a>
     <a href="javascript:" onclick="document.getElementById('logoutForm').submit();" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right"><i class="fa fa-sign-out w3-xxlarge"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right"><i class="fa fa-user-secret w3-xxlarge"></i></a>
+    <a portfolioid="${sessionScope.user.id}" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right portfolioButton"><i class="fa fa-user-secret w3-xxlarge"></i></a>
 </nav>

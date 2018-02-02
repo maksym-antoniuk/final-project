@@ -1,0 +1,39 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div id="portfolio" class="w3-modal">
+    <div class="w3-modal-content">
+        <header class="w3-container w3-red">
+            <span class="w3-closebtn" id="closePortfolio">&times;</span>
+            <h2>Портфолио</h2>
+        </header>
+        <div class="w3-container w3-modal-content">
+            <table class="w3-table">
+                <tr class="w3-threequarter">
+                    <td>Name</td>
+                    <td id="us_name"></td>
+                </tr>
+                <tr class="w3-threequarter">
+                    <td>Surname</td>
+                    <td id="us_surname"></td>
+                </tr>
+                <tr class="w3-threequarter">
+                    <td>Email</td>
+                    <td id="us_email"></td>
+                </tr>
+                <tr class="w3-threequarter">
+                    <td>Phone</td>
+                    <td id="us_phone"></td>
+                </tr>
+                <tr class="w3-threequarter">
+                    <td>Role</td>
+                    <td id="us_role"></td>
+                </tr>
+                <tr class="w3-threequarter">
+                    <td>Days</td>
+                    <td id="us_days"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="${pageContext.request.contextPath}/scripts/portfolio.js"></script>

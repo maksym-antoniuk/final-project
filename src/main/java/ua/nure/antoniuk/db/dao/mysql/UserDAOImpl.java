@@ -3,6 +3,7 @@ package ua.nure.antoniuk.db.dao.mysql;
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.db.dao.UserDAO;
 import ua.nure.antoniuk.db.transaction.ConnectionManager;
+import ua.nure.antoniuk.dto.PortfolioDTO;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.util.Util;
 
@@ -20,6 +21,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_USER = "UPDATE users SET email=?, phone=?, photo=?, password=?, salary=? WHERE id=?";
     private static final String CALL_TRY_TO_LOGIN = "{? = call try_to_login(?,?)}";
     private static final String GET_ALL_USERS = "SELECT * FROM users";
+    private static final String GET_PORTFOLIO_BY_ID = "SELECT name, surname, email, phone, role, timestampdiff(DAY, datareg, now()) as days FROM users WHERE id = ?";
 
     @Override
     public Optional<User> getByEmail(String email) {
@@ -89,6 +91,29 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public PortfolioDTO getPortfolio(int id) {
+        PortfolioDTO portfolioDTO = null;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_PORTFOLIO_BY_ID)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                portfolioDTO = new PortfolioDTO();
+                portfolioDTO.setUsername(resultSet.getString("name"));
+                portfolioDTO.setSurname(resultSet.getString("surname"));
+                portfolioDTO.setEmail(resultSet.getString("email"));
+                portfolioDTO.setPhone(resultSet.getString("phone"));
+                portfolioDTO.setRole(resultSet.getString("role"));
+                portfolioDTO.setDays(String.valueOf(resultSet.getInt("days")));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new RuntimeException(e);
+        }
+        return portfolioDTO;
+    }
+
+    @Override
     public int create(User entity) {
         Connection connection = ConnectionManager.getConnection();
         int id = 0;
@@ -133,6 +158,7 @@ public class UserDAOImpl implements UserDAO {
             ps.setString(3, entity.getImgPath());
             ps.setString(4, entity.getPassword());
             ps.setFloat(5, entity.getSalary());
+            ps.setInt(6, entity.getId());
             res = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -152,6 +178,7 @@ public class UserDAOImpl implements UserDAO {
         user.setLastname(resultSet.getNString("surname"));
         user.setEmail(resultSet.getNString("email"));
         user.setPhone(resultSet.getString("phone"));
+        user.setPassword(resultSet.getString("password"));
         user.setRole(Util.getRole(resultSet.getNString("role")));
         user.setSalary(resultSet.getFloat("salary"));
         user.setImgPath(resultSet.getString("photo"));
@@ -164,7 +191,7 @@ public class UserDAOImpl implements UserDAO {
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getLastname());
         preparedStatement.setString(3, user.getEmail());
-        preparedStatement.setString(4, Util.hash(user.getPassword()));
+        preparedStatement.setString(4, user.getPassword());
         preparedStatement.setString(5, user.getRole().getRole());
         preparedStatement.setFloat(6, user.getSalary());
         preparedStatement.setString(7, user.getPhone());

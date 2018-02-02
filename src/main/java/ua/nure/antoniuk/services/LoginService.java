@@ -29,11 +29,11 @@ public class LoginService {
         }
         switch (userService.tryToLogin(loginDTO.extractUser())) {
             case Constants.CODE_INCORRECT_EMAIL:
-                errors.put(Constants.EMAIL, Constants.INCORRECT_EMAIL);
+                errors.put(Constants.EMAIL + " or " + Constants.PASSWORD, Constants.INCORRECT);
                 LOGGER.trace(errors.get(Constants.EMAIL));
                 break;
             case Constants.CODE_INCORRECT_PASSWORD:
-                errors.put(Constants.PASSWORD, Constants.INCORRECT_PASSWORD);
+                errors.put(Constants.EMAIL + " or " + Constants.PASSWORD, Constants.INCORRECT);
                 LOGGER.trace(errors.get(Constants.PASSWORD));
                 break;
         }

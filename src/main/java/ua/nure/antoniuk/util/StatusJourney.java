@@ -1,11 +1,11 @@
 package ua.nure.antoniuk.util;
 
-public enum Status {
+public enum StatusJourney {
     NEW("new"), ON_PROCESS("on_process"), OLD("old"), CANCELED("canceled");
 
     private String status;
 
-    Status(String status) {
+    StatusJourney(String status) {
         this.status = status;
     }
 

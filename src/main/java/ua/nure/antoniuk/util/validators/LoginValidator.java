@@ -19,11 +19,11 @@ public class LoginValidator {
     public Map<String, String> validate(LoginDTO loginDTO) {
         Map<String, String> errors = new HashMap<>();
         if (!Util.isMatch(EMAIL, loginDTO.getEmail())) {
-            errors.put(Constants.EMAIL, Constants.INVALID_FORMAT_EMAIL);
+            errors.put(Constants.EMAIL, Constants.INVALID_FORMAT);
             LOGGER.trace(errors.get(Constants.EMAIL));
         }
         if (!Util.isMatch(PASSWORD, loginDTO.getPassword())) {
-            errors.put(Constants.PASSWORD, Constants.INVALID_FORMAT_PASSWORD);
+            errors.put(Constants.PASSWORD, Constants.INVALID_FORMAT);
             LOGGER.trace(errors.get(Constants.PASSWORD));
         }
         return errors;

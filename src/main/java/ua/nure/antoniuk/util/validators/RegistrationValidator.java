@@ -21,22 +21,22 @@ public class RegistrationValidator {
     private static final String CAR_MODEL = "(?U)\\w{2,15}";
     private static final String CAR_MARK = "(?U)\\w{2,15}";
     private static final String CAR_NUMBER = "(?U)\\w{5,15}";
-    private static final String CAR_CAPACITY = "\\d|(\\d+\\.\\d+)";
-    private static final String CAR_MAX_WEIGHT = "\\d|(\\d+\\.\\d+)";
+    private static final String CAR_CAPACITY = "\\d{1,11}|(\\d+\\.\\d+)";
+    private static final String CAR_MAX_WEIGHT = "\\d{1,11}|(\\d+\\.\\d+)";
 
     public Map<String, String> validateManagerDTO(ManagerRegDTO managerRegDTO) {
         Map<String, String> errors = new HashMap<>();
         if (!Util.isMatch(USER_NAME, managerRegDTO.getName())) {
-            errors.put(Constants.NAME, Constants.INVALID_FORMAT_NAME);
+            errors.put(Constants.NAME, Constants.INVALID_FORMAT);
         }
         if (!Util.isMatch(USER_SURNAME, managerRegDTO.getSurname())) {
-            errors.put(Constants.SURNAME, Constants.INVALID_FORMAT_SURNAME);
+            errors.put(Constants.SURNAME, Constants.INVALID_FORMAT);
         }
         if (!Util.isMatch(EMAIL, managerRegDTO.getEmail())) {
-            errors.put(Constants.EMAIL, Constants.INVALID_FORMAT_EMAIL);
+            errors.put(Constants.EMAIL, Constants.INVALID_FORMAT);
         }
         if (!Util.isMatch(PHONE, managerRegDTO.getPhone())) {
-            errors.put(Constants.PHONE, Constants.INVALID_FORMAT_PHONE);
+            errors.put(Constants.PHONE, Constants.INVALID_FORMAT);
         }
         return errors;
     }
@@ -45,43 +45,43 @@ public class RegistrationValidator {
     public Map<String, String> validateDriverDTO(DriverRegDTO driverRegDTO) {
         Map<String, String> errors = new HashMap<>();
         if (!Util.isMatch(USER_NAME, driverRegDTO.getName())) {
-            errors.put(Constants.NAME, Constants.INVALID_FORMAT_NAME);
+            errors.put(Constants.NAME, Constants.INVALID_FORMAT);
             LOGGER.trace(errors.get(Constants.NAME) + " " + driverRegDTO.getName());
         }
         if (!Util.isMatch(USER_SURNAME, driverRegDTO.getSurname())) {
-            errors.put(Constants.SURNAME, Constants.INVALID_FORMAT_SURNAME);
+            errors.put(Constants.SURNAME, Constants.INVALID_FORMAT);
             LOGGER.trace(errors.get(Constants.SURNAME) + " " + driverRegDTO.getSurname());
         }
         if (!Util.isMatch(EMAIL, driverRegDTO.getEmail())) {
-            errors.put(Constants.EMAIL, Constants.INVALID_FORMAT_EMAIL);
+            errors.put(Constants.EMAIL, Constants.INVALID_FORMAT);
             LOGGER.trace(errors.get(Constants.EMAIL));
         }
         if (!Util.isMatch(PHONE, driverRegDTO.getPhone())) {
-            errors.put(Constants.PHONE, Constants.INVALID_FORMAT_PHONE);
+            errors.put(Constants.PHONE, Constants.INVALID_FORMAT);
             LOGGER.trace(errors.get(Constants.PHONE));
         }
         if (!Util.isMatch(CAR_MARK, driverRegDTO.getCarMark())) {
-            errors.put(Constants.CAR_MARK, Constants.INVALID_FORMAT_CAR_MARK);
+            errors.put(Constants.CAR_MARK, Constants.INVALID_FORMAT);
             LOGGER.trace(Constants.CAR_MARK);
         }
         if (!Util.isMatch(CAR_MODEL, driverRegDTO.getCarModel())) {
-            errors.put(Constants.CAR_MODEL, Constants.INVALID_FORMAT_CAR_MODEL);
+            errors.put(Constants.CAR_MODEL, Constants.INVALID_FORMAT);
             LOGGER.trace(Constants.CAR_MODEL);
         }
         if (!Util.isMatch(CAR_NUMBER, driverRegDTO.getCarNumber())) {
-            errors.put(Constants.CAR_NUMBER, Constants.INVALID_FORMAT_CAR_NUMBER);
+            errors.put(Constants.CAR_NUMBER, Constants.INVALID_FORMAT);
             LOGGER.trace(Constants.CAR_NUMBER);
         }
         if (!Constants.BODYWORK_LIST.contains(driverRegDTO.getBodywork())) {
-            errors.put(Constants.BODYWORK, Constants.INVALID_CAR_BODYWORK);
+            errors.put(Constants.BODYWORK, Constants.INVALID_TYPE);
             LOGGER.trace(Constants.BODYWORK);
         }
         if (!Util.isMatch(CAR_CAPACITY, driverRegDTO.getCapacity())) {
-            errors.put(Constants.CAPACITY, Constants.INVALID_FORMAT_MAX_WEIGHT);
+            errors.put(Constants.CAPACITY, Constants.INVALID_FORMAT);
             LOGGER.trace(Constants.CAPACITY);
         }
         if (!Util.isMatch(CAR_MAX_WEIGHT, driverRegDTO.getVolume())) {
-            errors.put(Constants.MAX_WEIGHT, Constants.INVALID_FORMAT_CAPACITY);
+            errors.put(Constants.MAX_WEIGHT, Constants.INVALID_FORMAT);
             LOGGER.trace(Constants.MAX_WEIGHT);
         }
         return errors;

@@ -6,6 +6,7 @@ import ua.nure.antoniuk.db.dao.PotentialCarDAO;
 import ua.nure.antoniuk.db.dao.PotentialUserDAO;
 import ua.nure.antoniuk.db.dao.UserDAO;
 import ua.nure.antoniuk.db.transaction.TransactionManager;
+import ua.nure.antoniuk.dto.PortfolioDTO;
 import ua.nure.antoniuk.entity.Car;
 import ua.nure.antoniuk.entity.PotentialCar;
 import ua.nure.antoniuk.entity.PotentialUser;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
@@ -122,6 +124,16 @@ public class UserService {
             }
             potentialUserDAO.delete(potentialUser);
             return 0;
+        });
+    }
+
+    public PortfolioDTO getPortfolio(int id) {
+        return transactionManager.executeWithoutTransaction(() -> {
+            PortfolioDTO portfolioDTO = userDAO.getPortfolio(id);
+            if (Objects.isNull(portfolioDTO)) {
+                portfolioDTO.setUnnamed();
+            }
+            return portfolioDTO;
         });
     }
 

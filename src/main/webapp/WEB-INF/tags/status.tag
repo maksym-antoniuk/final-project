@@ -6,7 +6,7 @@
         <span class="w3-tag w3-blue">New!</span>
     </c:when>
     <c:when test="${\"on_process\" == category}">
-        <span class="w3-tag w3-teal">On Process</span>
+        <span class="w3-tag w3-teal">Perform</span>
     </c:when>
     <c:when test="${\"old\" == category}">
         <span class="w3-tag w3-orange">Old</span>

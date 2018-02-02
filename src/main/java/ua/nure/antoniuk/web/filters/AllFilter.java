@@ -16,6 +16,7 @@ public class AllFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         req.setCharacterEncoding(encoding);
+        resp.setCharacterEncoding(encoding);
         chain.doFilter(req, resp);
     }
 

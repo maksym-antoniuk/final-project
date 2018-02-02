@@ -30,24 +30,21 @@ public abstract class Constants {
     public static final String CAR_MARK = "Car mark";
     public static final String CAR_MODEL = "Car model";
     public static final String CAPACITY = "Car volume capacity";
+    public static final String VOLUME = "Volume";
     public static final String MAX_WEIGHT = "Car max weight";
+    public static final String WEIGHT = "Weight";
     public static final String BODYWORK = "Car bodywork";
+    public static final String DIRECTION_FROM = "Point of departure";
+    public static final String DIRECTION_WHERE = "Destination";
+    public static final String MATERIAL = "Material";
+    public static final String PRICE = "Price";
 
     //Error validate body
-    public static final String INVALID_FORMAT_NAME = "Invalid name format";
-    public static final String INVALID_FORMAT_SURNAME = "Invalid surname format";
-    public static final String INVALID_FORMAT_EMAIL = "Invalid email format";
-    public static final String INVALID_FORMAT_PASSWORD = "Invalid password format";
-    public static final String INVALID_FORMAT_PHONE = "Invalid phone format";
-    public static final String INVALID_FORMAT_CAR_NUMBER = "Invalid car number format";
-    public static final String INVALID_FORMAT_CAR_MARK = "Invalid car mark format";
-    public static final String INVALID_FORMAT_CAR_MODEL = "Invalid car model format";
-    public static final String INVALID_FORMAT_CAPACITY = "Invalid car capacity format";
-    public static final String INVALID_FORMAT_MAX_WEIGHT = "Invalid car max weight format";
-    public static final String INVALID_CAR_BODYWORK = "Invalid car bodywork";
+    public static final String INVALID_FORMAT = "Invalid format";
 
-    public static final String INCORRECT_PASSWORD = "Incorrect password";
-    public static final String INCORRECT_EMAIL = "Incorrect email";
+    public static final String INVALID_TYPE = "Invalid car bodywork";
+
+    public static final String INCORRECT = "Incorrect";
 
 
     //Parameters names
@@ -93,6 +90,7 @@ public abstract class Constants {
     public static final String ALL_USERS = "allUsers";
     public static final String POTENTIAL_MANAGERS = "managers";
     public static final String POTENTIAL_DRIVERS = "drivers";
+    public static final String ALL_CARS = "allCars";
 
     //Session attributes
     public static final String SESSION_USER = "user";

@@ -2,6 +2,8 @@ package ua.nure.antoniuk.dto;
 
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.util.Constants;
+import ua.nure.antoniuk.util.StringUtil;
+import ua.nure.antoniuk.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,7 +36,7 @@ public class LoginDTO {
     public User extractUser() {
         User user = new User();
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(StringUtil.MD5(password));
         return user;
     }
 }

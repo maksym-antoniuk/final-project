@@ -1,7 +1,21 @@
 package ua.nure.antoniuk.db.builder;
 
-public class Filter {
+import javax.servlet.http.HttpServletRequest;
 
-    private boolean asc;
+public abstract class Filter {
+
+
+    public Filter() {
+    }
+
+    public Filter(HttpServletRequest request) {
+
+    }
+
+    protected boolean ascId;
+
+    public String toSQLQuery(){
+        return "";
+    }
 
 }

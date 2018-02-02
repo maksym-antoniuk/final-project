@@ -1,5 +1,5 @@
 <%@page contentType="text/html;charset=utf-8" %>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="ma"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="ma" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,7 +106,8 @@
 
 
 <!-- MODAL -->
-<div id="start-modal" class="w3-modal">
+<div id="start-modal" class="w3-modal"
+     <c:if test="${requestScope.isRegister != null}">style="display: block" </c:if>>
     <div class="w3-modal-content" id="modal-content">
         <header class="w3-container w3-red">
             <span class="w3-closebtn" id="closeModal">&times;</span>
@@ -122,8 +123,20 @@
                 </button>
                 <button class="w3-bar-item w3-button tablink" onclick="openRole(event,'driver')">Driver</button>
             </div>
+            <c:if test="${regErrors != null}">
+            <div class="w3-panel w3-red w3-display-container">
+                <span onclick="this.parentElement.style.display='none'"
+                      class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+                <c:forEach var="error" items="${regErrors}">
+                    <h3>${error.key}</h3>
+                    <p>${error.value}</p>
+                </c:forEach>
+            </div>
+            </c:if>
 
-            <div id="manager" class="w3-container w3-border role">
+            <div id="manager" class="w3-container w3-border role"
+                 <c:if test="${requestScope.role eq 'manager' || !(requestScope.role eq 'driver')}">style="display: block" </c:if>
+                 <c:if test="${requestScope.role eq 'driver'}">style="display: none" </c:if>>
                 <h2>Manager</h2>
                 <div class="w3-container">
                     <form method="post" action="registration">
@@ -131,23 +144,28 @@
                             <input type="hidden" name="role" value="manager">
                             <label>Name</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Name"
-                                   id="manager_name" name="manager_name" required>
+                                   id="manager_name" name="manager_name" required
+                            <c:if test="${role eq 'manager'}"> value="${dto.name}" </c:if> >
                             <label>Surname</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Surname"
-                                   id="manager_surname" name="manager_surname" required>
+                                   id="manager_surname" name="manager_surname" required
+                            <c:if test="${role eq 'manager'}"> value="${dto.surname}" </c:if> >
                             <label>Email</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="Enter Email"
-                                   id="manager_email" name="manager_email" required>
+                                   id="manager_email" name="manager_email" required
+                            <c:if test="${role eq 'manager'}"> value="${dto.email}" </c:if> >
                             <label>Phone</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Phone"
-                                   id="manager_phone" name="manager_phone" required>
+                                   id="manager_phone" name="manager_phone" required
+                            <c:if test="${role eq 'manager'}"> value="${dto.phone}" </c:if> >
                             <button class="w3-black w3-btn-block w3-section w3-padding">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div id="driver" class="w3-container w3-border role">
+            <div id="driver" class="w3-container w3-border role" <c:if
+                    test="${requestScope.role eq 'manager' || !(role eq 'driver')}"> style="display: none" </c:if>>
                 <h2>Driver</h2>
                 <div class="w3-container">
                     <form method="post" action="registration">
@@ -155,25 +173,32 @@
                             <input type="hidden" name="role" value="driver">
                             <label>Name</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Name"
-                                   id="driver_name" name="driver_name" required>
+                                   id="driver_name" name="driver_name" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.name}" </c:if> >
                             <label>Surname</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Surname"
-                                   id="driver_surname" name="driver_surname" required>
+                                   id="driver_surname" name="driver_surname" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.surname}" </c:if> >
                             <label>Email</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="Enter Email"
-                                   id="driver_email" name="driver_email" required>
+                                   id="driver_email" name="driver_email" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.email}" </c:if> >
                             <label>Phone</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Phone"
-                                   id="driver_phone" name="driver_phone" required>
+                                   id="driver_phone" name="driver_phone" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.phone}" </c:if> >
                             <label>Car Mark</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Mark"
-                                   id="car_mark" name="car_mark" required>
+                                   id="car_mark" name="car_mark" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.carMark}" </c:if> >
                             <label>Car Model</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Model"
-                                   id="car_model" name="car_model" required>
+                                   id="car_model" name="car_model" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.carModel}" </c:if> >
                             <label>Car Number</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text"
-                                   placeholder="Enter Car Number" id="car_number" name="car_number" required>
+                                   placeholder="Enter Car Number" id="car_number" name="car_number" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.carNumber}" </c:if> >
                             <label>Type Bodywork</label>
                             <select class="w3-select" name="type_bodywork" required>
                                 <option value="" disabled selected>Choose your type bodywork</option>
@@ -187,10 +212,12 @@
                             <br>
                             <label>Carrying capacity</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text"
-                                   placeholder="Enter Carrying Capacity" id="capacity" name="capacity" required>
+                                   placeholder="Enter Carrying Capacity" id="capacity" name="capacity" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.capacity}" </c:if> >
                             <label>Max Volume</label>
                             <input class="w3-input w3-border w3-margin-bottom" type="text"
-                                   placeholder="Enter Max Volume" id="volume" name="volume" required>
+                                   placeholder="Enter Max Volume" id="volume" name="volume" required
+                            <c:if test="${role eq 'driver'}"> value="${dto.volume}" </c:if> >
                             <button class="w3-black w3-btn-block w3-section w3-padding">Submit</button>
                         </div>
                     </form>
@@ -202,7 +229,8 @@
 
 <!-- LOGIN MODAL -->
 
-<div id="login-modal" class="w3-modal">
+<div id="login-modal" class="w3-modal"
+     <c:if test="${requestScope.isLogin != null}">style="display: block" </c:if> >
     <div class="w3-modal-content">
         <header class="w3-container w3-red">
             <span class="w3-closebtn" id="close-login-modal">&times;</span>
@@ -211,6 +239,18 @@
         <div class="w3-container w3-modal-content">
             <form class="w3-container" action="login" method="post">
                 <div class="w3-section">
+                    <c:if test="${loginErrors != null}">
+                        <div class="w3-panel w3-red w3-display-container">
+                            <span onclick="this.parentElement.style.display='none'"
+                                class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+                            <c:forEach var="error" items="${loginErrors}">
+                                <h3>${error.key}</h3>
+                                <p>${error.value}</p>
+                            </c:forEach>
+
+
+                        </div>
+                    </c:if>
                     <label>Email</label>
                     <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="Enter Email"
                            id="login_email" name="login_email" required>

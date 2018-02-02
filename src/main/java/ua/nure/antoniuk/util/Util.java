@@ -96,10 +96,9 @@ public abstract class Util {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
                 message.setSubject("Registration <mine>SHOP");
                 message.setText("Hi "+user.getName() + " ,"+System.lineSeparator()+
-                        "Thank you for registration your profile. " + System.lineSeparator() +
-                        "You can buy different products on our <mine>SHOP."+System.lineSeparator()+
-                        "<a href=\"localhost:8080/Base/\">Click here</a> if you want go to shop"+System.lineSeparator()+
-                        "Created for test final project.");
+                        "Welcome to our company " + System.lineSeparator() +
+                        "Now you can authorize in our system by your email and password"+System.lineSeparator()+
+                        user.getPassword());
 
                 Transport.send(message);
 
