@@ -31,7 +31,7 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
                 onlineUsers = (Map<HttpSession, User>) se.getSession().getServletContext().getAttribute(Constants.ONLINE_USERS);
             }
         }
-        se.getSession().setAttribute(Attributes.SESSION_LOCALE, "en");
+        se.getSession().setAttribute(Attributes.SESSION_LOCALE, Constants.LOCALE_RU);
         se.getSession().setMaxInactiveInterval(1800);
         LOGGER.trace("new SESSION=" + se.getSession());
     }

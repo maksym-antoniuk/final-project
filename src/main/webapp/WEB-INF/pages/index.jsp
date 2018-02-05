@@ -1,4 +1,4 @@
-<%@page contentType="text/html;charset=utf-8" %>
+<%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="ma" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<fmt:setLocale value="ru" />
+<fmt:setLocale value="${sessionScope.locale}" />
 <fmt:setBundle basename="lang"/>
 <%@include file="../views/sign.jspf" %>
-
+<ma:nav/>
 
 <!-- SHOWCASE -->
 <section class="showcase">
@@ -274,5 +274,6 @@
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/scripts/main.js"></script>
+<%@include file="/WEB-INF/views/footer.jspf" %>
 </body>
 </html>

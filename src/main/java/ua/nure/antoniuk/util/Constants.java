@@ -93,6 +93,9 @@ public abstract class Constants {
     public static final String POTENTIAL_DRIVERS = "drivers";
     public static final String ALL_CARS = "allCars";
 
+    public static final String LOCALE_EN = "en";
+    public static final String LOCALE_RU = "ru";
+
     //Session attributes
     public static final String SESSION_USER = "user";
 

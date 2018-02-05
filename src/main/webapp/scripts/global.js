@@ -21,3 +21,10 @@ function post(path, params, method) {
     document.body.appendChild(form);
     form.submit();
 }
+function getContextPath() {
+    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+}
+
+document.getElementById('language').onchange = function () {
+    post(getContextPath().concat('/language'), {lang:this.value})
+};
