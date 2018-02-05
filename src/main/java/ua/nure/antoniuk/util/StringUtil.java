@@ -36,8 +36,7 @@ public abstract class StringUtil {
             stringBuilder.append("{\"id\":\"").append(car.getId()).append("\",\"number\":\"").append(car.getNumber()).append("\",\"mark\":\"")
                     .append(car.getMark()).append("\",\"model\":\"").append(car.getModel()).append("\",\"bodywork\":\"").append(car.getBodywork().getBodywork())
                     .append("\",\"driverId\":\"").append(car.getIdDriver()).append("\",\"maxWeight\":\"").append(car.getMaxWeight()).append("\",\"maxVolume\":\"")
-                    .append(car.getMaxVolume()).append("\",\"img\":\"").append(StringUtil.stringOrEmptyString(car.getPathImg())).append("\",\"status\":\"").append(car.getStatus().getStatus())
-                    .append("\"},");
+                    .append(car.getMaxVolume()).append("\",\"status\":\"").append(car.getStatus().getStatus()).append("\"},");
         }
         stringBuilder.replace(stringBuilder.length()-1, stringBuilder.length(), "").append("]}");
         return stringBuilder.toString();

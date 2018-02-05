@@ -78,7 +78,8 @@ public abstract class Constants {
     public static final String SERVICE_LOGIN = "login_service";
     public static final String SERVICE_JOURNEY = "journey_service";
     public static final String SERVICE_LOGOUT = "logout_service";
-
+    public static final String SERVICE_FILE = "file_service";
+    public static final String SERVICE_FILTRATION = "filtration_service";
     //Attribute names
     public static final String REGISTRATION_ERROR = "reg_error";
     public static final String REGISTRATION_DTO_MANAGER = "reg_dto_manager";
@@ -94,6 +95,8 @@ public abstract class Constants {
 
     //Session attributes
     public static final String SESSION_USER = "user";
+
+
     static {
         BODYWORK_LIST.add(Bodywork.ANIMAL.getBodywork());
         BODYWORK_LIST.add(Bodywork.BULK.getBodywork());

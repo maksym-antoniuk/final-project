@@ -1,5 +1,7 @@
 <%@page contentType="text/html;charset=utf-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="ma" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,14 +14,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
+<fmt:setLocale value="ru" />
+<fmt:setBundle basename="lang"/>
 <%@include file="../views/sign.jspf" %>
 
 
 <!-- SHOWCASE -->
 <section class="showcase">
     <div class="w3-container w3-center">
-        <h1 class="w3-text-shadow w3-animate-opacity">Go Anywhere</h1>
+        <h1 class="w3-text-shadow w3-animate-opacity">${sessionScope.locale}<fmt:message key="index.company"/> </h1>
         <hr>
         <p class="w3-animate-opacity">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco

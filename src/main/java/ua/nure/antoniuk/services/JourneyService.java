@@ -2,6 +2,7 @@ package ua.nure.antoniuk.services;
 
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.db.builder.Filter;
+import ua.nure.antoniuk.db.builder.FilterJourney;
 import ua.nure.antoniuk.db.dao.CarDAO;
 import ua.nure.antoniuk.db.dao.JourneyDAO;
 import ua.nure.antoniuk.db.dao.UserDAO;
@@ -35,8 +36,12 @@ public class JourneyService {
         return transactionManager.executeWithoutTransaction(() -> journeyDAO.getAll());
     }
 
-    public List<JourneyDisplayDTO> getJourneys(Filter filter) {
-        return transactionManager.executeWithoutTransaction(() -> journeyDAO.getJourneys(filter));
+    public List<JourneyDisplayDTO> getJourneys(FilterJourney filter) {
+        return transactionManager.execute(() -> {
+            filter.setCountPages(journeyDAO.getCountPages(filter));
+            LOGGER.trace(filter.getCountPages());
+            return journeyDAO.getJourneys(filter);
+        });
     }
 
     public int create(Journey journey) {
@@ -59,7 +64,7 @@ public class JourneyService {
                 return "Car now in journey";
             }
             journeyDAO.setCarToJourney(journeyId, carId);
-            return null;
+            return "";
         });
     }
 
@@ -88,7 +93,7 @@ public class JourneyService {
             journeyDAO.acceptCarToJourney(journeyId, carId);
             journey.setStatus(StatusJourney.ON_PROCESS);
             journeyDAO.update(journey);
-            return null;
+            return "";
         });
     }
 

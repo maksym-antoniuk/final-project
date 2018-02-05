@@ -8,6 +8,7 @@ import ua.nure.antoniuk.entity.Car;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.exceptions.DBException;
 import ua.nure.antoniuk.util.Bodywork;
+import ua.nure.antoniuk.util.Boolean;
 import ua.nure.antoniuk.util.StatusCar;
 import ua.nure.antoniuk.util.StringUtil;
 
@@ -19,18 +20,22 @@ import java.util.Optional;
 public class CarDAOImpl implements CarDAO {
     private static final Logger LOGGER = Logger.getLogger(CarDAOImpl.class);
     private static final String ADD_CAR = "INSERT INTO cars (number, mark, model, type_bodywork, max_weight, max_volume, id_driver) VALUES (?,?,?,?,?,?,?)";
-    private static final String GET_ALL_CAR = "SELECT * FROM cars";
-    private static final String GET_DRIVERS_CARS = "SELECT * FROM cars WHERE id_driver = ?";
+    private static final String GET_ALL_CAR = "SELECT * FROM cars WHERE exist = 'yes'";
+    private static final String GET_DRIVERS_CARS = "SELECT * FROM cars WHERE id_driver = ? AND exist = 'yes'";
     private static final String IF_REGISTER_ON_JOURNEY = "SELECT * FROM journeys_has_cars WHERE journeys_id = ? AND cars_id = ? LIMIT 1";
-    private static final String IS_ON_ROAD = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id INNER JOIN journeys j ON car.journeys_id = j.id WHERE car.cars_id = ? AND car.accept = 'yes' AND j.status = 'on_process'";
-    private static final String GET_CAR_BY_ID = "SELECT * FROM cars WHERE id = ?";
-    private static final String GET_JOURNEY_CARS = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id WHERE car.journeys_id = ?";
-    private static final String GET_GARAGE_BY_ID = "SELECT c.id, c.number, c.mark, c.model, c.photo, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, count(jc.accept), 0 FROM final.cars c\n" +
-            "LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'yes' AND c.id_driver = ? GROUP BY jc.cars_id\n" +
-            "UNION\n" +
-            "SELECT c.id, c.number, c.mark, c.model, c.photo, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, count(jc.accept) FROM final.cars c\n" +
-            "LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'no' AND c.id_driver = ? GROUP BY jc.cars_id;";
-    private static final String UPDATE_CAR = "UPDATE cars SET max_weight = ?, max_volume = ?, type_bodywork = ?, status = ?, photo = ? WHERE id = ?";
+    private static final String IS_ON_ROAD = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id INNER JOIN journeys j ON car.journeys_id = j.id WHERE car.cars_id = ? AND car.accept = 'yes' AND j.status = 'on_process' AND exist = 'yes'";
+    private static final String GET_CAR_BY_ID = "SELECT * FROM cars WHERE id = ? AND exist = 'yes'";
+    private static final String GET_JOURNEY_CARS = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id WHERE car.journeys_id = ? ";
+    private static final String GET_GARAGE_BY_ID = "SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, count(jc.accept), 0 " +
+            "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'yes' AND c.id_driver = ? AND c.exist = 'yes' GROUP BY jc.cars_id " +
+            "UNION SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, count(jc.accept) " +
+            "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'no' AND c.id_driver = ? AND c.exist = 'yes' GROUP BY jc.cars_id " +
+            "UNION SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, 0 " +
+            "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE c.id_driver = ? AND c.exist = 'yes' GROUP BY c.id;";
+    private static final String UPDATE_CAR = "UPDATE cars SET number = ?, max_weight = ?, max_volume = ?, type_bodywork = ?, status = ?, exist = ? WHERE id = ?";
+    private static final String IS_EXIST_NUMBER = "SELECT * FROM cars WHERE number = ? LIMIT 1";
+    private static final String DELETE_CAR = "UPDATE cars SET exist = 'no' WHERE id=?";
+    private static final String IS_EXIST_NUMBER_EXCEPT = "SELECT * FROM cars WHERE number = ? AND id != ? LIMIT 1";
 
     @Override
     public int create(Car entity) {
@@ -78,12 +83,13 @@ public class CarDAOImpl implements CarDAO {
         boolean result = false;
         Connection connection = ConnectionManager.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CAR)) {
-            preparedStatement.setFloat(1, entity.getMaxWeight());
-            preparedStatement.setFloat(2, entity.getMaxVolume());
-            preparedStatement.setString(3, entity.getBodywork().getBodywork());
-            preparedStatement.setString(4, entity.getStatus().getStatus());
-            preparedStatement.setString(5, entity.getPathImg());
-            preparedStatement.setInt(6, entity.getId());
+            preparedStatement.setString(1, entity.getNumber());
+            preparedStatement.setFloat(2, entity.getMaxWeight());
+            preparedStatement.setFloat(3, entity.getMaxVolume());
+            preparedStatement.setString(4, entity.getBodywork().getBodywork());
+            preparedStatement.setString(5, entity.getStatus().getStatus());
+            preparedStatement.setString(6, entity.getExist().getBool());
+            preparedStatement.setInt(7, entity.getId());
             if (preparedStatement.executeUpdate() > 0) {
                 result = true;
             }
@@ -96,7 +102,18 @@ public class CarDAOImpl implements CarDAO {
 
     @Override
     public boolean delete(Car entity) {
-        return false;
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_CAR)) {
+            preparedStatement.setInt(1, entity.getId());
+            if (preparedStatement.executeUpdate() > 0) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new DBException("Delete car " + entity.getId(), e);
+        }
+        return result;
     }
 
     @Override
@@ -181,10 +198,6 @@ public class CarDAOImpl implements CarDAO {
         return result;
     }
 
-    @Override
-    public boolean isRegisteredOnJourney(int carid) {
-        return false;
-    }
 
     @Override
     public List<CarGarageDTO> getGarageById(int id) {
@@ -193,9 +206,14 @@ public class CarDAOImpl implements CarDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_GARAGE_BY_ID)) {
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, id);
+            preparedStatement.setInt(3, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            List<Integer> list = new ArrayList<>();
             while (resultSet.next()) {
-                cars.add(new CarGarageDTO().setCar(extract(resultSet)).setCountPerformed(resultSet.getInt(11)).setCountSubscribed(resultSet.getInt(11) + resultSet.getInt(12)));
+                if (!list.contains(resultSet.getInt("id"))) {
+                    cars.add(new CarGarageDTO().setCar(extract(resultSet)).setCountPerformed(resultSet.getInt(11)).setCountSubscribed(resultSet.getInt(11) + resultSet.getInt(12)));
+                    list.add(resultSet.getInt("id"));
+                }
             }
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -204,13 +222,48 @@ public class CarDAOImpl implements CarDAO {
         return cars;
     }
 
+    @Override
+    public boolean isExist(String carNumber) {
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(IS_EXIST_NUMBER)) {
+            preparedStatement.setString(1, carNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new DBException("Car isExist " + carNumber, e);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isExistExcept(String carNumber, int id) {
+        boolean result = false;
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(IS_EXIST_NUMBER_EXCEPT)) {
+            preparedStatement.setString(1, carNumber);
+            preparedStatement.setInt(2, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new DBException("Car isExist " + carNumber, e);
+        }
+        return result;
+    }
+
     private Car extract(ResultSet resultSet) throws SQLException {
         Car car = new Car();
         car.setId(resultSet.getInt("id"));
         car.setNumber(resultSet.getString("number"));
         car.setMark(resultSet.getString("mark"));
         car.setModel(resultSet.getString("model"));
-        car.setPathImg(StringUtil.stringOrEmptyString(resultSet.getString("photo")));
+        car.setExist(Boolean.valueOf(resultSet.getString("exist").toUpperCase()));
         car.setBodywork(Bodywork.valueOf(resultSet.getString("type_bodywork").toUpperCase()));
         car.setMaxWeight(resultSet.getFloat("max_weight"));
         car.setMaxVolume(resultSet.getFloat("max_volume"));

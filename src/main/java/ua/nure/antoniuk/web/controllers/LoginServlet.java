@@ -1,6 +1,7 @@
 package ua.nure.antoniuk.web.controllers;
 
 import org.apache.log4j.Logger;
+import ua.nure.antoniuk.db.builder.FilterJourney;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.services.CarService;
 import ua.nure.antoniuk.services.LoginService;
@@ -32,7 +33,9 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if (errors.isEmpty()) {
             LOGGER.trace("GOOD LOGIN");
-            session.setAttribute(Constants.SESSION_USER, loginService.getByEmail(request));
+            User user = loginService.getByEmail(request);
+            session.setAttribute(Constants.SESSION_USER, user);
+            session.setAttribute(Attributes.SESSION_FILTER_JOURNEY, new FilterJourney(user.getRole(), user.getId()));
             if (((User) session.getAttribute(Attributes.SESSION_USER)).getRole().equals(Role.DRIVER)) {
                 session.setAttribute(Attributes.SESSION_CARS, carService.getDriversCars(((User) session.getAttribute(Attributes.SESSION_USER)).getId()));
             }
@@ -60,4 +63,6 @@ public class LoginServlet extends HttpServlet {
         carService = (CarService) config.getServletContext().getAttribute(Constants.SERVICE_CAR);
         LOGGER.trace("Login servlet init");
     }
+
 }
+

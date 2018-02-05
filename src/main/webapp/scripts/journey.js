@@ -127,26 +127,77 @@ function acceptCar(idJour) {
 
 function cancelJourney(id) {
     post('/Base/journey', {cancel:id});
-};
+}
 
 function confirmJourney(id) {
     post('/Base/journey', {confirm:id});
 }
 
-function showEditPanel() {
-    var x = document.getElementById("editPanel");
-    if (x.className.indexOf("w3-show") === -1) {
-        x.className += " w3-show";
-    } else {
-        x.className = x.className.replace(" w3-show", "");
-    }
-}
+$('#sort_id').click(function(){
+    post('/Base/journeys/filter/id')
+});
 
-function closeEditPanel() {
-    var x = document.getElementById("editPanel");
-    if (x.className.indexOf("w3-show") === -1) {
-        x.className += " w3-show";
-    } else {
-        x.className = x.className.replace(" w3-show", "");
-    }
-}
+$('#sort_date').click(function(){
+    post('/Base/journeys/filter/date')
+});
+
+$('#sort_volume').click(function(){
+    post('/Base/journeys/filter/volume')
+});
+
+$('#sort_dateFinish').click(function(){
+    post('/Base/journeys/filter/dateFinish')
+});
+
+$('#sort_capacity').click(function(){
+    post('/Base/journeys/filter/capacity')
+});
+
+$('#sort_price').click(function(){
+    post('/Base/journeys/filter/price')
+});
+
+$('#sort_new').change(function(){
+    post('/Base/journeys/filter/new')
+});
+
+$('#sort_cancel').change(function(){
+    post('/Base/journeys/filter/canceled')
+});
+
+$('#sort_old').change(function(){
+    post('/Base/journeys/filter/old')
+});
+
+$('#sort_perform').change(function(){
+    post('/Base/journeys/filter/perform')
+});
+
+$('#sort_bulk').change(function(){
+    post('/Base/journeys/filter/bulk')
+});
+
+$('#sort_solid').change(function(){
+    post('/Base/journeys/filter/solid')
+});
+
+$('#sort_liquid').change(function(){
+    post('/Base/journeys/filter/liquid')
+});
+
+$('#sort_car').change(function(){
+    post('/Base/journeys/filter/car')
+});
+
+$('#sort_animal').change(function(){
+    post('/Base/journeys/filter/animal')
+});
+
+$('#sort_user').change(function(){
+    post('/Base/journeys/filter/user')
+});
+
+$('#sendCountRows').click(function () {
+    var count = document.getElementById('countRows').value;
+    post('/Base/journeys/filter/count'.concat(count));
+})

@@ -16,6 +16,9 @@ public abstract class Mapping {
     public static final String SERVLET_POTENTIAL_CAR = "potential-car";
     public static final String SERVLET_CAR_JOURNEY = "car-journey";
     public static final String SERVLET_GARAGE = "garage";
+    public static final String SERVLET_IMAGE = "resources/image/*";
+    public static final String SERVLET_CABINET = "cabinet";
+    public static final String SERVLET_FILTER_JOURNEY = "journeys/filter/*";
 
     public static final String SERVLET_MAIN_URL = "/" + SERVLET_MAIN;
     public static final String SERVLET_LOGIN_URL = "/" + SERVLET_LOGIN;
@@ -29,6 +32,9 @@ public abstract class Mapping {
     public static final String SERVLET_POTENTIAL_CAR_URL = "/" + SERVLET_POTENTIAL_CAR;
     public static final String SERVLET_CAR_JOURNEY_URL = "/" + SERVLET_CAR_JOURNEY;
     public static final String SERVLET_GARAGE_URL = "/" + SERVLET_GARAGE;
+    public static final String SERVLET_IMAGE_URL = "/" + SERVLET_IMAGE;
+    public static final String SERVLET_CABINET_URL = "/" + SERVLET_CABINET;
+    public static final String SERVLET_FILTER_JOURNEYS_URL = "/" + SERVLET_FILTER_JOURNEY;
 
     /**
      * This constants use for mapping jsp files
@@ -38,8 +44,10 @@ public abstract class Mapping {
     public static final String JSP_POTENTIAL_USERS = "/WEB-INF/pages/potential-users.jsp";
     public static final String JSP_USERS = "/WEB-INF/pages/users.jsp";
     public static final String JSP_CARS = "/WEB-INF/pages/cars.jsp";
-    public static final String JSP_PORTFOLIO = "/WEB-INF/pages/portfolio.jsp";
+    public static final String JSP_CABINET = "/WEB-INF/pages/cabinet.jsp";
     public static final String JSP_GARAGE = "/WEB-INF/pages/garage.jsp";
+    public static final String JSP_POTENTIAL_CARS = "/WEB-INF/pages/potential-cars.jsp";
+
 
     /**
      * @exception UnsupportedOperationException

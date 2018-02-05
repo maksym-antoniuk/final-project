@@ -18,4 +18,6 @@ public abstract class Filter {
         return "";
     }
 
+    public String toSQLQueryCount(){return "";}
+
 }

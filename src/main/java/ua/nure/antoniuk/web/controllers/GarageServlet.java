@@ -26,6 +26,14 @@ public class GarageServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(Attributes.REQUEST_GARAGE_CARS, carService.getGarage(((User)request.getSession().getAttribute(Constants.SESSION_USER)).getId()));
+        request.setAttribute(Attributes.SESSION_ERROR_UPLOAD, request.getSession().getAttribute(Attributes.SESSION_ERROR_UPLOAD));
+        request.setAttribute(Attributes.SESSION_ERROR_STATUS_CAR, request.getSession().getAttribute(Attributes.SESSION_ERROR_STATUS_CAR));
+        request.setAttribute(Attributes.SESSION_ERROR_CREATE_CAR, request.getSession().getAttribute(Attributes.SESSION_ERROR_CREATE_CAR));
+        request.setAttribute(Attributes.SESSION_DTO_CAR, request.getSession().getAttribute(Attributes.SESSION_DTO_CAR));
+        request.getSession().removeAttribute(Attributes.SESSION_ERROR_UPLOAD);
+        request.getSession().removeAttribute(Attributes.SESSION_DTO_CAR);
+        request.getSession().removeAttribute(Attributes.SESSION_ERROR_STATUS_CAR);
+        request.getSession().removeAttribute(Attributes.SESSION_ERROR_CREATE_CAR);
         request.getRequestDispatcher(Mapping.JSP_GARAGE).forward(request, response);
     }
 

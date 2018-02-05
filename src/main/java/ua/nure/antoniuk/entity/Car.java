@@ -1,6 +1,7 @@
 package ua.nure.antoniuk.entity;
 
 import ua.nure.antoniuk.util.Bodywork;
+import ua.nure.antoniuk.util.Boolean;
 import ua.nure.antoniuk.util.StatusCar;
 
 import java.io.Serializable;
@@ -12,12 +13,20 @@ public class Car implements Serializable {
     private String number;
     private String mark;
     private String model;
-    private String pathImg;
+    private Boolean exist;
     private Bodywork bodywork;
     private float maxWeight;
     private float maxVolume;
     private int idDriver;
     private StatusCar status;
+
+    public Boolean getExist() {
+        return exist;
+    }
+
+    public void setExist(Boolean exist) {
+        this.exist = exist;
+    }
 
     public StatusCar getStatus() {
         return status;
@@ -57,14 +66,6 @@ public class Car implements Serializable {
 
     public void setMark(String mark) {
         this.mark = mark;
-    }
-
-    public String getPathImg() {
-        return pathImg;
-    }
-
-    public void setPathImg(String pathImg) {
-        this.pathImg = pathImg;
     }
 
     public Bodywork getBodywork() {
@@ -111,7 +112,6 @@ public class Car implements Serializable {
                 Objects.equals(getNumber(), car.getNumber()) &&
                 Objects.equals(getMark(), car.getMark()) &&
                 Objects.equals(getModel(), car.getModel()) &&
-                Objects.equals(getPathImg(), car.getPathImg()) &&
                 getBodywork() == car.getBodywork() &&
                 getStatus() == car.getStatus();
     }
@@ -119,7 +119,7 @@ public class Car implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getNumber(), getMark(), getModel(), getPathImg(), getBodywork(), getMaxWeight(), getMaxVolume(), getIdDriver(), getStatus());
+        return Objects.hash(getId(), getNumber(), getMark(), getModel(), getBodywork(), getMaxWeight(), getMaxVolume(), getIdDriver(), getStatus());
     }
 
     @Override
@@ -129,7 +129,6 @@ public class Car implements Serializable {
                 ", number='" + number + '\'' +
                 ", mark='" + mark + '\'' +
                 ", model='" + model + '\'' +
-                ", pathImg='" + pathImg + '\'' +
                 ", bodywork=" + bodywork.getBodywork() +
                 ", maxWeight=" + maxWeight +
                 ", maxVolume=" + maxVolume +

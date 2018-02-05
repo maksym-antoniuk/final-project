@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_USER = "UPDATE users SET email=?, phone=?, photo=?, password=?, salary=? WHERE id=?";
     private static final String CALL_TRY_TO_LOGIN = "{? = call try_to_login(?,?)}";
     private static final String GET_ALL_USERS = "SELECT * FROM users";
-    private static final String GET_PORTFOLIO_BY_ID = "SELECT name, surname, email, phone, role, timestampdiff(DAY, datareg, now()) as days FROM users WHERE id = ?";
+    private static final String GET_PORTFOLIO_BY_ID = "CALL get_portfolio(?)";
 
     @Override
     public Optional<User> getByEmail(String email) {
@@ -94,9 +94,9 @@ public class UserDAOImpl implements UserDAO {
     public PortfolioDTO getPortfolio(int id) {
         PortfolioDTO portfolioDTO = null;
         Connection connection = ConnectionManager.getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_PORTFOLIO_BY_ID)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (CallableStatement callableStatement = connection.prepareCall(GET_PORTFOLIO_BY_ID)) {
+            callableStatement.setInt(1, id);
+            ResultSet resultSet = callableStatement.executeQuery();
             if (resultSet.next()) {
                 portfolioDTO = new PortfolioDTO();
                 portfolioDTO.setUsername(resultSet.getString("name"));
@@ -105,6 +105,7 @@ public class UserDAOImpl implements UserDAO {
                 portfolioDTO.setPhone(resultSet.getString("phone"));
                 portfolioDTO.setRole(resultSet.getString("role"));
                 portfolioDTO.setDays(String.valueOf(resultSet.getInt("days")));
+                portfolioDTO.setCountJourney(String.valueOf(resultSet.getInt("journeys")));
             }
         } catch (SQLException e) {
             LOGGER.error(e);

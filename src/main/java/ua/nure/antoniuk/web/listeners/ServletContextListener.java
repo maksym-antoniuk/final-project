@@ -17,12 +17,11 @@ import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @WebListener
 public class ServletContextListener implements javax.servlet.ServletContextListener {
@@ -51,9 +50,13 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         LoginService loginService = new LoginService(userService);
         JourneyService journeyService = new JourneyService(journeyDAO, transactionManager, carDAO, userDAO);
         LogoutService logoutService = new LogoutService();
+        FileService fileService = new FileService();
+        FiltrationService filtrationService = new FiltrationService();
 
-        List<User> onlineUsers = new ArrayList<>();
+        Map<HttpSession, User> onlineUsers = new ConcurrentHashMap<>();
 
+        sce.getServletContext().setAttribute(Constants.SERVICE_FILTRATION, filtrationService);
+        sce.getServletContext().setAttribute(Constants.SERVICE_FILE, fileService);
         sce.getServletContext().setAttribute(Constants.ONLINE_USERS, onlineUsers);
         sce.getServletContext().setAttribute(Constants.SERVICE_LOGOUT, logoutService);
         sce.getServletContext().setAttribute(Constants.SERVICE_JOURNEY, journeyService);
@@ -63,7 +66,6 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         sce.getServletContext().setAttribute(Constants.SERVICE_REGISTRATION, registrationService);
 
         LOGGER.trace("init context");
-        LOGGER.trace(StringUtil.MD5("root"));
     }
 
     private DataSource getDataSource() {

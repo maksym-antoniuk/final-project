@@ -1,6 +1,7 @@
 package ua.nure.antoniuk.db.dao;
 
 import ua.nure.antoniuk.db.builder.Filter;
+import ua.nure.antoniuk.db.builder.FilterJourney;
 import ua.nure.antoniuk.dto.JourneyDisplayDTO;
 import ua.nure.antoniuk.entity.Journey;
 
@@ -18,5 +19,7 @@ public interface JourneyDAO extends CRUD<Journey>{
 
     boolean confirm(int id);
 
-    List<JourneyDisplayDTO> getJourneys(Filter filter);
+    List<JourneyDisplayDTO> getJourneys(FilterJourney filter);
+
+    int getCountPages(FilterJourney filter);
 }

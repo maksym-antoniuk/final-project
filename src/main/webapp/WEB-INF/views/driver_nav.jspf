@@ -2,6 +2,6 @@
     <form style="display: none" id="logoutForm" action="logout" method="post"></form>
     <a href="${pageContext.request.contextPath}/journey" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-truck w3-xlarge"><p class="w3-tiny" style="margin: 0px">Journeys</p></i></a>
     <a href="${pageContext.request.contextPath}/garage" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red"><i class="fa fa-car w3-xlarge"><p class="w3-tiny" style="margin: 0px">Garage</p></i></a>
-    <a href="javascript:" onclick="document.getElementById('logoutForm').submit();" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right"><i class="fa fa-sign-out w3-xlarge"><p class="w3-tiny" style="margin: 0px">Cabinet</p></i></a>
-    <a portfolioid="${sessionScope.user.id}" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right portfolioButton"><i class="fa fa-user-secret w3-xlarge"><p class="w3-tiny" style="margin: 0px">Logout</p></i></a>
+    <a href="javascript:" onclick="document.getElementById('logoutForm').submit();" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right"><i class="fa fa-sign-out w3-xlarge"><p class="w3-tiny" style="margin: 0px">Logout</p></i></a>
+    <a href="${pageContext.request.contextPath}/cabinet" class="w3-bar-item w3-button w3-hover-none w3-border-black w3-bottombar w3-hover-border-red w3-hover-text-red w3-right portfolioButton"><i class="fa fa-user-secret w3-xlarge"><p class="w3-tiny" style="margin: 0px">Cabinet</p></i></a>
 </nav>

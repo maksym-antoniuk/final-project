@@ -1,16 +1,14 @@
 package ua.nure.antoniuk.web.controllers;
 
 import org.apache.log4j.Logger;
+import ua.nure.antoniuk.db.builder.Filter;
 import ua.nure.antoniuk.db.builder.FilterJourney;
 import ua.nure.antoniuk.dto.JourneyDTO;
 import ua.nure.antoniuk.dto.JourneyDisplayDTO;
 import ua.nure.antoniuk.entity.Journey;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.services.JourneyService;
-import ua.nure.antoniuk.util.Constants;
-import ua.nure.antoniuk.util.Mapping;
-import ua.nure.antoniuk.util.Parameters;
-import ua.nure.antoniuk.util.Util;
+import ua.nure.antoniuk.util.*;
 import ua.nure.antoniuk.util.validators.JourneyValidator;
 
 import javax.servlet.ServletConfig;
@@ -41,6 +39,7 @@ public class JourneyServlet extends HttpServlet {
                 Journey journey = journeyDTO.extract();
                 journey.setIdManager(((User)request.getSession().getAttribute(Constants.SESSION_USER)).getId());
                 journeyService.create(journey);
+                LOGGER.trace("create journey");
             }
         } else if (!Objects.isNull(request.getParameter("cancel"))) {
             if (Util.isMatch("\\d+", request.getParameter("cancel"))) {
@@ -62,7 +61,7 @@ public class JourneyServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //request.setAttribute("journeys", journeyService.getJourneys());
-        List<JourneyDisplayDTO> journeyDisplayDTO = journeyService.getJourneys(new FilterJourney());
+        List<JourneyDisplayDTO> journeyDisplayDTO = journeyService.getJourneys((FilterJourney) request.getSession().getAttribute(Attributes.SESSION_FILTER_JOURNEY));
         request.setAttribute("journeys", journeyDisplayDTO);
         request.getRequestDispatcher(Mapping.JSP_JOURNEYS).forward(request, response);
     }

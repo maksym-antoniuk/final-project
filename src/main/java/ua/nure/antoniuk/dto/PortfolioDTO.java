@@ -7,6 +7,7 @@ public class PortfolioDTO {
     private String phone;
     private String role;
     private String days;
+    private String countJourney;
 
     public PortfolioDTO() {
     }
@@ -59,6 +60,14 @@ public class PortfolioDTO {
         this.days = days;
     }
 
+    public String getCountJourney() {
+        return countJourney;
+    }
+
+    public void setCountJourney(String countJourney) {
+        this.countJourney = countJourney;
+    }
+
     public String toJson() {
         return "{" +
                 "\"username\":\"" + username + "\"," +
@@ -66,6 +75,7 @@ public class PortfolioDTO {
                 "\"email\":\"" + email + "\"," +
                 "\"phone\":\"" + phone + "\"," +
                 "\"role\":\"" + role + "\"," +
+                "\"journeys\":\"" + countJourney + "\"," +
                 "\"days\":\"" + days + "\"}";
     }
 
@@ -76,5 +86,6 @@ public class PortfolioDTO {
         setPhone("Unknown");
         setRole("Unknown");
         setDays("?");
+        setCountJourney("?");
     }
 }

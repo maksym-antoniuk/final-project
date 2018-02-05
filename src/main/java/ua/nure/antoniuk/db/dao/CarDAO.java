@@ -17,7 +17,8 @@ public interface CarDAO extends CRUD<Car> {
 
     boolean isOnRoad(int carid);
 
-    boolean isRegisteredOnJourney(int carid);
-
     List<CarGarageDTO> getGarageById(int id);
+
+    boolean isExist(String carNumber);
+    boolean isExistExcept(String carNumber, int id);
 }

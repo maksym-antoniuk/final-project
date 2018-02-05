@@ -2,6 +2,7 @@ package ua.nure.antoniuk.db.dao.mysql;
 
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.db.builder.Filter;
+import ua.nure.antoniuk.db.builder.FilterJourney;
 import ua.nure.antoniuk.db.dao.JourneyDAO;
 import ua.nure.antoniuk.db.transaction.ConnectionManager;
 import ua.nure.antoniuk.dto.JourneyDisplayDTO;
@@ -27,7 +28,6 @@ public class JourneyDAOImpl implements JourneyDAO {
     private static final String UPDATE_JOURNEY = "UPDATE journeys SET status = ?, price = ?, weight = ?, type = ?, volume = ?, `from` = ?, `where` = ? WHERE id = ?";
     private static final String IS_HAS_CAR = "SELECT * FROM journeys_has_cars WHERE journeys_id = ? AND cars_id = ?";
     private static final String CONFIRM_BY_ID = "UPDATE journeys SET status = 'old' , date_finish = now() WHERE id = ?";
-    private static final String TEST = "SELECT j.id, j.date, j.date_finish, j.`from`, j.id_manager, j.price, j.status, j.type, j.volume, j.weight, j.`where`, count(jc.cars_id), if(jc.accept = 'yes',c.id_driver, 0) FROM journeys j LEFT OUTER JOIN journeys_has_cars jc ON j.id = journeys_id LEFT OUTER JOIN cars c ON cars_id = c.id GROUP BY j.id;";
 
     @Override
     public List<Journey> getAll() {
@@ -114,11 +114,12 @@ public class JourneyDAOImpl implements JourneyDAO {
     }
 
     @Override
-    public List<JourneyDisplayDTO> getJourneys(Filter filter) {
+    public List<JourneyDisplayDTO> getJourneys(FilterJourney filter) {
         List<JourneyDisplayDTO> journeys = new ArrayList<>();
         Connection connection = ConnectionManager.getConnection();
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(TEST);
+            LOGGER.trace(filter.toSQLQuery());
+            ResultSet resultSet = statement.executeQuery(filter.toSQLQuery());
             while (resultSet.next()) {
                 journeys.add(new JourneyDisplayDTO().setJourney(extract(resultSet)).setCountCar(resultSet.getInt(12)).setIdDriver(resultSet.getInt(13)));
             }
@@ -127,6 +128,23 @@ public class JourneyDAOImpl implements JourneyDAO {
             throw new DBException("Get journeys", e);
         }
         return journeys;
+    }
+
+    @Override
+    public int getCountPages(FilterJourney filter) {
+        int count = 0;
+        Connection connection = ConnectionManager.getConnection();
+        try (Statement statement = connection.createStatement()) {
+            LOGGER.trace(filter.toSQLQueryCount());
+            ResultSet resultSet = statement.executeQuery(filter.toSQLQueryCount());
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new DBException("Get count pages journeys ", e);
+        }
+        return (count % filter.getCountRows() == 0) ? (count / filter.getCountRows()) : (count / filter.getCountRows() + 1);
     }
 
     @Override
