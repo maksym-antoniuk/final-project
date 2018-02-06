@@ -7,10 +7,14 @@ import ua.nure.antoniuk.dto.CarDTO;
 import ua.nure.antoniuk.dto.CarGarageDTO;
 import ua.nure.antoniuk.entity.Car;
 import ua.nure.antoniuk.entity.PotentialCar;
+import ua.nure.antoniuk.entity.User;
+import ua.nure.antoniuk.util.Attributes;
+import ua.nure.antoniuk.util.Constants;
 import ua.nure.antoniuk.util.StatusCar;
 import ua.nure.antoniuk.util.validators.CarValidator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 public class CarService {
@@ -113,11 +117,7 @@ public class CarService {
     public PotentialCar getPotentialCar(int id) {
         return transactionManager.executeWithoutTransaction(() -> {
             Optional<PotentialCar> optional = potentialCarDAO.read(id);
-            if (optional.isPresent()) {
-                return optional.get();
-            } else {
-              return new PotentialCar();
-            }
+            return optional.orElseGet(PotentialCar::new);
         });
     }
 
@@ -161,7 +161,7 @@ public class CarService {
         });
     }
 
-    public Map<String,String> validateEditCar(CarDTO carDTO) {
+    public Map<String, String> validateEditCar(CarDTO carDTO) {
         Map<String, String> errors = carValidator.validateEdit(carDTO);
         if (errors.isEmpty()) {
             System.out.println(carDTO);
@@ -195,6 +195,14 @@ public class CarService {
             car3.setStatus(car1.get().getStatus());
             System.out.println(car3);
             return carDAO.update(car3);
+        });
+    }
+
+    public void updateGarage(HttpServletRequest request, int idUser) {
+        ((Map<HttpSession, User>) request.getServletContext().getAttribute(Constants.ONLINE_USERS)).forEach((k, v) -> {
+            if (v.getId() == idUser) {
+                k.setAttribute(Attributes.SESSION_CARS, getDriversCars(idUser));
+            }
         });
     }
 }

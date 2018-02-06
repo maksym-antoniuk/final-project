@@ -1,6 +1,7 @@
 package ua.nure.antoniuk.dto;
 
 public class PortfolioDTO {
+    private String idUser;
     private String username;
     private String surname;
     private String email;
@@ -10,6 +11,14 @@ public class PortfolioDTO {
     private String countJourney;
 
     public PortfolioDTO() {
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 
     public String getUsername() {
@@ -75,6 +84,7 @@ public class PortfolioDTO {
                 "\"email\":\"" + email + "\"," +
                 "\"phone\":\"" + phone + "\"," +
                 "\"role\":\"" + role + "\"," +
+                "\"idUser\":\"" + idUser + "\"," +
                 "\"journeys\":\"" + countJourney + "\"," +
                 "\"days\":\"" + days + "\"}";
     }

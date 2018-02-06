@@ -11,6 +11,8 @@ public abstract class Parameters {
     public static final String DELETE_CAR = "delete";
     public static final String EDIT_CAR = "edit";
     public static final String LANG = "lang";
+    public static final String CHANGE_PASSWORD = "pass";
+    public static final String CHANGE_PASSWORD_CONFIRM = "confirmPass";
 
     private Parameters() {
         throw new UnsupportedOperationException("You can't create instance of this class");

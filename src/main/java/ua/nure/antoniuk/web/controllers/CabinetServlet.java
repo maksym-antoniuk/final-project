@@ -25,6 +25,8 @@ public class CabinetServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(Attributes.SESSION_ERROR_CHANGE_PASSWORD, request.getSession().getAttribute(Attributes.SESSION_ERROR_CHANGE_PASSWORD));
+        request.getSession().removeAttribute(Attributes.SESSION_ERROR_CHANGE_PASSWORD);
         request.setAttribute(Attributes.REQUEST_PORTFOLIO, userService.getPortfolio(((User)request.getSession().getAttribute(Attributes.SESSION_USER)).getId()));
         request.getRequestDispatcher(Mapping.JSP_CABINET).forward(request, response);
     }

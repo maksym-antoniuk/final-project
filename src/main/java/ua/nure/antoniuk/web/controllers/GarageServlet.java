@@ -30,6 +30,8 @@ public class GarageServlet extends HttpServlet {
         request.setAttribute(Attributes.SESSION_ERROR_STATUS_CAR, request.getSession().getAttribute(Attributes.SESSION_ERROR_STATUS_CAR));
         request.setAttribute(Attributes.SESSION_ERROR_CREATE_CAR, request.getSession().getAttribute(Attributes.SESSION_ERROR_CREATE_CAR));
         request.setAttribute(Attributes.SESSION_DTO_CAR, request.getSession().getAttribute(Attributes.SESSION_DTO_CAR));
+        request.setAttribute("goodCreate", request.getSession().getAttribute("goodCreate"));
+        request.getSession().removeAttribute("goodCreate");
         request.getSession().removeAttribute(Attributes.SESSION_ERROR_UPLOAD);
         request.getSession().removeAttribute(Attributes.SESSION_DTO_CAR);
         request.getSession().removeAttribute(Attributes.SESSION_ERROR_STATUS_CAR);

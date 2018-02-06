@@ -18,4 +18,6 @@ public interface UserDAO extends CRUD<User> {
     List<User> getUsers();
 
     PortfolioDTO getPortfolio(int id);
+
+    Optional<User> getDriverByIdCar(int idCar);
 }

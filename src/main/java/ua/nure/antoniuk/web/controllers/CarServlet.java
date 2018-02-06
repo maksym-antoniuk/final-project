@@ -6,6 +6,7 @@ import ua.nure.antoniuk.entity.Car;
 import ua.nure.antoniuk.entity.PotentialCar;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.services.CarService;
+import ua.nure.antoniuk.services.UserService;
 import ua.nure.antoniuk.util.*;
 
 import javax.servlet.ServletConfig;
@@ -14,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
@@ -22,12 +24,14 @@ import java.util.Objects;
 public class CarServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(CarServlet.class);
     private CarService carService;
+    private UserService userService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!Objects.isNull(request.getParameter(Parameters.CHANGE_CAR_STATUS))) {
             String error;
             if (Util.isMatch("\\d+", request.getParameter(Parameters.CHANGE_CAR_STATUS))) {
                 error = carService.changeStatusCar(Integer.parseInt(request.getParameter(Parameters.CHANGE_CAR_STATUS)), ((User) request.getSession().getAttribute(Constants.SESSION_USER)).getId());
+                carService.updateGarage(request, userService.getDriverByIdCar(Integer.parseInt(request.getParameter(Parameters.CHANGE_CAR_STATUS))).getId());
             } else {
                 error = Constants.INVALID_FORMAT;
             }
@@ -49,7 +53,9 @@ public class CarServlet extends HttpServlet {
         } else if (!Objects.isNull(request.getParameter(Parameters.DELETE_CAR))) {
             String error;
             if (Util.isMatch("\\d+", request.getParameter(Parameters.DELETE_CAR))) {
+                User user = userService.getDriverByIdCar(Integer.parseInt(request.getParameter(Parameters.DELETE_CAR)));
                 error = carService.deleteCar(Integer.parseInt(request.getParameter(Parameters.DELETE_CAR)));
+                carService.updateGarage(request, user.getId());
             } else {
                 error = Constants.INVALID_FORMAT;
             }
@@ -62,16 +68,20 @@ public class CarServlet extends HttpServlet {
                     Car car = carDTO.toCar();
                     car.setId(Integer.parseInt(request.getParameter(Parameters.EDIT_CAR)));
                     carService.update(car);
+                    carService.updateGarage(request, userService.getDriverByIdCar(Integer.parseInt(request.getParameter(Parameters.EDIT_CAR))).getId());
                     request.getSession().setAttribute("goodEdit", "as");
                 } else {
                     request.getSession().setAttribute(Attributes.SESSION_ERROR_EDIT_CAR, errors);
                 }
             response.sendRedirect(Mapping.SERVLET_CAR);
         }
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!((User) request.getSession().getAttribute(Attributes.SESSION_USER)).getRole().equals(Role.ADMIN)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         request.setAttribute(Constants.ALL_CARS, carService.getAllCars());
         request.setAttribute(Attributes.SESSION_ERROR_EDIT_CAR, request.getSession().getAttribute(Attributes.SESSION_ERROR_EDIT_CAR));
         request.setAttribute("goodEdit", request.getSession().getAttribute("goodEdit"));
@@ -83,6 +93,7 @@ public class CarServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         carService = (CarService) config.getServletContext().getAttribute(Constants.SERVICE_CAR);
+        userService = (UserService) config.getServletContext().getAttribute(Constants.SERVICE_USER);
         LOGGER.trace("Car Servlet init");
     }
 }

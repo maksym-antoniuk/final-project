@@ -33,6 +33,7 @@ public class RegistrationServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if (errors.isEmpty()) {
             registrationService.register(request);
+            session.setAttribute(Constants.REGISTRATION_ERROR, "");
             LOGGER.trace("user was register");
         } else {
             session.setAttribute(Constants.REGISTRATION_ERROR, errors);

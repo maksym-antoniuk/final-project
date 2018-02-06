@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="m" uri="../mytag.tld" %>
+<%@ taglib prefix="m" uri="/WEB-INF/mytag.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="ma" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   Created by IntelliJ IDEA.
   User: maxim
@@ -9,15 +10,17 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}" />
+<fmt:setBundle basename="lang"/>
 <html>
 <head>
     <title>Summary Task 4</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/w31.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/${sessionScope.theme}.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/upload.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/scripts/jquery-1.10.2.js" type="text/javascript"></script>
     <link rel="icon" href="${pageContext.request.contextPath}/img/logo.png" type="image/png" sizes="16x16">
 </head>
 <body>
@@ -27,23 +30,23 @@
     <div class="w3-modal-content">
         <header class="w3-container w3-red">
             <span class="w3-closebtn" id="closeModal" onclick="this.parentElement.parentElement.parentElement.style.display = 'none'">&times;</span>
-            <h2>Upload Image</h2>
+            <h2><fmt:message key="upload.img"/></h2>
         </header>
         <div class="w3-container w3-modal-content">
             <form class="w3-container" id="formUp" method="post" enctype="multipart/form-data">
                 <div class="w3-section">
                     <input name="file" id="file-5" class="inputfile inputfile-4" style="opacity: 0" data-multiple-caption="{count} files selected" multiple="" type="file" accept="image/* ">
-                    <label for="file-5"><i class="fa fa-upload w3-xxxlarge w3-row"></i> <span>Choose file...</span></label>
+                    <label for="file-5"><i class="fa fa-upload w3-xxxlarge w3-row"></i> <span><fmt:message key="choose.file"/></span></label>
                     <div id="uic" name="uploadImgCar" value="5">
                         <input class="w3-quarter" style="opacity: 0" >
-                        <button class="w3-black w3-btn-block w3-section w3-padding w3-half w3-center">Add</button>
+                        <button class="w3-black w3-btn-block w3-section w3-padding w3-half w3-center"><fmt:message key="input.submit"/></button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<h2>GARAGE
+<h2><fmt:message key="nav.garage"/>
     <i class="fa fa-gear w3-xxlarge w3-right w3-text-black w3-dropdown-hover" style="background: none">
         <div class="w3-dropdown-content" style="min-width: auto; background: none;">
             <h4><i class="fa fa-plus w3-xxlarge w3-hover-text-green" onclick="document.getElementById('car-modal').style.display = 'block'"></i></h4>
@@ -55,7 +58,7 @@
         <%--<c:forEach begin="0" end="3">--%>
             <div class="w3-col l3 m6 w3-margin-bottom w3-row-padding w3-red car-card" style="width: 300px; margin-left: 6px; margin-right: 6px;">
                 <div class="w3-display-container w3-red" style="margin-left: -8px" onmouseover="">
-                    <img src="${pageContext.request.contextPath}/resources/image/car/${car.car.id}.jpg" alt="Fjords" onerror="this.src = '${pageContext.request.contextPath}/img/L2.png'"
+                    <img src="${pageContext.request.contextPath}/resources/image/car/${car.car.id}.jpg" alt="Fjords" onerror="this.src = '${pageContext.request.contextPath}/img/defaultcar.jpg'"
                     <c:if test="${car.car.status.status eq 'broken'}">
                          class="w3-grayscale-max"
                     </c:if>  style="object-fit: cover;width:300px; height: 300px;">
@@ -74,9 +77,9 @@
 
                 </div>
                 <div  style="margin-top: 20px" class="w3-text-white">
-                    <p style="margin-top: -15px"><b>Capacity:</b> ${car.car.maxWeight} <b>Volume:</b> ${car.car.maxVolume}</p>
-                    <p style="margin-top: -15px"><b>Bodywork:</b> ${car.car.bodywork.bodywork}</p>
-                    <p style="margin-top: -15px"><b>Subscribed:</b> ${car.countSubscribed} <b>Performed:</b> ${car.countPerformed}</p>
+                    <p style="margin-top: -15px"><b><fmt:message key="label.car.capacity"/>:</b> ${car.car.maxWeight} <b><fmt:message key="label.car.volume"/>:</b> ${car.car.maxVolume}</p>
+                    <p style="margin-top: -15px"><b><fmt:message key="label.type.bodywork"/>:</b> ${car.car.bodywork.bodywork}</p>
+                    <p style="margin-top: -15px"><b><fmt:message key="label.subscribed"/>:</b> ${car.countSubscribed} <b><fmt:message key="label.performed"/>:</b> ${car.countPerformed}</p>
                 </div>
             </div>
         <%--</c:forEach>--%>
@@ -90,15 +93,15 @@
     <div class="w3-modal-content w3-animate-top">
         <header class="w3-container w3-red">
             <span class="w3-closebtn" id="close-login-modal" onclick="this.parentElement.parentElement.parentElement.style.display = 'none'">&times;</span>
-            <h2>Sign In</h2>
+            <h2><fmt:message key="label.add.car"/></h2>
         </header>
         <div class="w3-container w3-modal-content">
             <form class="w3-container" action="${pageContext.request.contextPath}/car" method="post">
                 <div class="w3-section">
                     <c:if test="${requestScope.createCarError != null}">
-                        <div class="w3-panel w3-red w3-display-container">
+                        <div class="w3-panel w3-redd w3-display-container">
                             <span onclick="this.parentElement.style.display='none'"
-                                  class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+                                  class="w3-button w3-redd w3-large w3-display-topright">&times;</span>
                             <c:forEach var="error" items="${requestScope.createCarError}">
                                 <h3>${error.key}</h3>
                                 <p>${error.value}</p>
@@ -106,33 +109,33 @@
                         </div>
                     </c:if>
                     <input hidden name="create" value="a">
-                    <label>Car Mark</label>
-                    <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Mark"
+                    <label><fmt:message key="label.car.mark"/></label>
+                    <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="<fmt:message key="label.placeholder.enter"/> <fmt:message key="label.car.mark"/>"
                            id="car_mark" name="car_mark" required value="${dto.carMark}" >
-                    <label>Car Model</label>
-                    <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Car Model"
+                    <label><fmt:message key="label.car.model"/></label>
+                    <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="<fmt:message key="label.placeholder.enter"/> <fmt:message key="label.car.model"/>"
                            id="car_model" name="car_model" required value="${dto.carModel}"  >
-                    <label>Car Number</label>
+                    <label><fmt:message key="label.car.number"/></label>
                     <input class="w3-input w3-border w3-margin-bottom" type="text"
-                           placeholder="Enter Car Number" id="car_number" name="car_number" required value="${dto.carNumber}">
-                    <label>Type Bodywork</label>
+                           placeholder="<fmt:message key="label.placeholder.enter"/> <fmt:message key="label.car.number"/>" id="car_number" name="car_number" required value="${dto.carNumber}">
+                    <label><fmt:message key="label.type.bodywork"/></label>
                     <select class="w3-select" name="type_bodywork" required>
-                        <option value="" disabled selected>Choose your type bodywork</option>
-                        <option value="tank">Tank</option>
-                        <option value="bulk">Bulk</option>
-                        <option value="animal">Animal</option>
-                        <option value="container">Container</option>
-                        <option value="car">Car</option>
+                        <option value="" disabled selected><fmt:message key="label.placeholder.bodywork"/></option>
+                        <option value="tank"><fmt:message key="bodywork.tank"/></option>
+                        <option value="bulk"><fmt:message key="bodywork.bulk"/></option>
+                        <option value="animal"><fmt:message key="bodywork.animal"/></option>
+                        <option value="container"><fmt:message key="bodywork.container"/></option>
+                        <option value="car"><fmt:message key="bodywork.car"/></option>
                     </select>
                     <br>
                     <br>
-                    <label>Carrying capacity</label>
+                    <label><fmt:message key="label.car.capacity"/></label>
                     <input class="w3-input w3-border w3-margin-bottom" type="text"
-                           placeholder="Enter Carrying Capacity" id="capacity" name="capacity" required value="${dto.capacity}" >
-                    <label>Max Volume</label>
+                           placeholder="<fmt:message key="label.placeholder.enter"/> <fmt:message key="label.car.capacity"/>" id="capacity" name="capacity" required value="${dto.capacity}" >
+                    <label><fmt:message key="label.car.volume"/></label>
                     <input class="w3-input w3-border w3-margin-bottom" type="text"
-                           placeholder="Enter Max Volume" id="volume" name="volume" required value="${dto.volume}" >
-                    <button class="w3-black w3-btn-block w3-section w3-padding">Submit</button>
+                           placeholder="<fmt:message key="label.placeholder.enter"/> <fmt:message key="label.car.volume"/>" id="volume" name="volume" required value="${dto.volume}" >
+                    <button class="w3-black w3-btn-block w3-section w3-padding"><fmt:message key="input.submit"/></button>
                 </div>
             </form>
         </div>
@@ -143,9 +146,9 @@
     <div id="driverCars" class="w3-modal" style="display: block">
         <div class="w3-modal-content">
             <c:if test="${requestScope.errorUpload != ''}">
-                <div class="w3-panel w3-red w3-display-container">
+                <div class="w3-panel w3-redd w3-display-container">
                     <span onclick="this.parentElement.parentElement.parentElement.style.display='none'"
-                          class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+                          class="w3-button w3-redd w3-large w3-display-topright">&times;</span>
                     <h3>Danger!</h3>
                     <p>${requestScope.errorUpload}</p>
                 </div>
@@ -166,9 +169,9 @@
     <div id="driverCars" class="w3-modal" style="display: block">
         <div class="w3-modal-content">
             <c:if test="${requestScope.errorStatusCar != ''}">
-                <div class="w3-panel w3-red w3-display-container">
+                <div class="w3-panel w3-redd w3-display-container">
                     <span onclick="this.parentElement.parentElement.parentElement.style.display='none'"
-                          class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+                          class="w3-button w3-redd w3-large w3-display-topright">&times;</span>
                     <h3>Danger!</h3>
                     <p>${requestScope.errorStatusCar}</p>
                 </div>
@@ -181,6 +184,19 @@
                     <p>Status has changed</p>
                 </div>
             </c:if>
+        </div>
+    </div>
+</c:if>
+
+<c:if test="${requestScope.goodCreate != null}">
+    <div id="driverCars" class="w3-modal" style="display: block">
+        <div class="w3-modal-content">
+                <div class="w3-panel w3-teal w3-display-container">
+                    <span onclick="this.parentElement.parentElement.parentElement.style.display='none'"
+                          class="w3-button w3-teal w3-large w3-display-topright">&times;</span>
+                    <h3>Good!</h3>
+                    <p>Thank you for making a request for adding a car!</p>
+                </div>
         </div>
     </div>
 </c:if>

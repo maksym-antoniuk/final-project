@@ -1,5 +1,6 @@
 package ua.nure.antoniuk.web.filters;
 
+import org.apache.log4j.Logger;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.util.Attributes;
 import ua.nure.antoniuk.util.Mapping;
@@ -12,21 +13,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-@WebFilter(filterName = "SecurityFilter", urlPatterns = {Mapping.SERVLET_JOURNEY_URL, Mapping.SERVLET_FILTER_JOURNEYS_URL, Mapping.SERVLET_CABINET_URL,
-Mapping.SERVLET_IMAGE_URL, Mapping.SERVLET_CAR_URL, Mapping.SERVLET_PORTFOLIO_URL, Mapping.SERVLET_ALL_USER_URL, Mapping.SERVLET_LOGOUT_URL, Mapping.SERVLET_POTENTIAL_USER_URL})
-public class SecurityFilter implements Filter {
+@WebFilter(filterName = "SecurityAdminFilter", urlPatterns = {Mapping.SERVLET_ALL_USER_URL, Mapping.SERVLET_PORTFOLIO_URL,
+        Mapping.SERVLET_POTENTIAL_USER_URL, Mapping.SERVLET_POTENTIAL_CAR_URL})
+public class SecurityAdminFilter implements Filter {
+    private static final Logger LOGGER = Logger.getLogger(SecurityAdminFilter.class);
+
     public void destroy() {
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
+        LOGGER.trace("filter admin before do chain");
         User user = (User) request.getSession().getAttribute(Attributes.SESSION_USER);
-        if (user != null && Role.ADMIN == user.getRole()) {
+        if (Objects.isNull(user)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+        if (Objects.equals(Role.ADMIN, user.getRole())) {
             chain.doFilter(req, resp);
             return;
         }
-        HttpServletResponse response = (HttpServletResponse) resp;
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        LOGGER.trace("filter admin after do chain");
+        response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
 
     public void init(FilterConfig config) throws ServletException {

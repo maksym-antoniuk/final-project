@@ -25,7 +25,7 @@ closeModalAdd.onclick = function (ev) {
 
 $(".buttonAddCar").click(function () {
     var carid = $(this).attr('carid');
-    var journeyid = $(this).parent().parent().attr('journeyid');
+    var journeyid = $(this).parent().parent().parent().attr('journeyid');
     post('/Base/car-journey', {addCarToJourney: ';;', journeyid: journeyid, carid: carid});
 });
 

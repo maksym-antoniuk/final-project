@@ -31,10 +31,6 @@ public abstract class Util {
         return calendar;
     }
 
-    public static String hash(String password) {
-        return "";
-    }
-
     public static boolean isMatch(String regex, String field) {
         return Pattern.compile(regex).matcher(field).find();
     }
@@ -94,7 +90,7 @@ public abstract class Util {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(username));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
-                message.setSubject("Registration <mine>SHOP");
+                message.setSubject("Registration in PERENOSCHIK company");
                 message.setText("Hi "+user.getName() + " ,"+System.lineSeparator()+
                         "Welcome to our company " + System.lineSeparator() +
                         "Now you can authorize in our system by your email and password"+System.lineSeparator()+
@@ -107,5 +103,61 @@ public abstract class Util {
                 throw new RuntimeException(e);
             }
         }).start();
+    }
+
+    public static void sendCancel(User user) {
+        new Thread(() -> {
+            final String username = "authobase.summarytask4@gmail.com";
+            final String password = "123qwerty456";
+
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+
+            Session session = Session.getInstance(props,
+                    new Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+
+            try {
+
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(username));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+                message.setSubject("PERENOSCHIK company");
+                message.setText("Hi "+user.getName() + " ,"+System.lineSeparator()+
+                        "Unfortunately you don't suit for us, GOOD LUCK");
+
+                Transport.send(message);
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }).start();
+    }
+
+    public static String getAcceptUserRegistration(User user) {
+        return "Hi "+user.getName() + " ,"+System.lineSeparator()+
+                "Welcome to our company " + System.lineSeparator() +
+                "Now you can authorize in our system by your email and password"+System.lineSeparator()+
+                user.getPassword();
+    }
+
+    public static String getCancelUserRegistration(User user) {
+        return "Hi "+user.getName() + " ,"+System.lineSeparator()+
+                "Unfortunately you don't suit for us, GOOD LUCK";
+    }
+
+    public static String acceptToJourney() {
+        return "Hi, you has been accepted to journey, please START IT NOW";
+    }
+
+    public static String getHeaderEmail() {
+        return "PERENOSCHIK company";
     }
 }

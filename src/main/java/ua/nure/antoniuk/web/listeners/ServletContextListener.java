@@ -8,7 +8,9 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import ua.nure.antoniuk.entity.User;
 import ua.nure.antoniuk.services.*;
+import ua.nure.antoniuk.util.Attributes;
 import ua.nure.antoniuk.util.Constants;
+import ua.nure.antoniuk.util.EmailSender;
 import ua.nure.antoniuk.util.StringUtil;
 
 import javax.naming.Context;
@@ -48,13 +50,16 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         UserService userService = new UserService(transactionManager, potentialUserDAO, potentialCarDAO, userDAO, carDAO);
         RegistrationService registrationService = new RegistrationService(userService);
         LoginService loginService = new LoginService(userService);
-        JourneyService journeyService = new JourneyService(journeyDAO, transactionManager, carDAO, userDAO);
+        JourneyService journeyService = new JourneyService(journeyDAO, transactionManager, carDAO, userDAO, userService);
         LogoutService logoutService = new LogoutService();
         FileService fileService = new FileService();
         FiltrationService filtrationService = new FiltrationService();
 
         Map<HttpSession, User> onlineUsers = new ConcurrentHashMap<>();
 
+        EmailSender emailSender = new EmailSender();
+
+        sce.getServletContext().setAttribute(Attributes.CONTEXT_SENDER, emailSender);
         sce.getServletContext().setAttribute(Constants.SERVICE_FILTRATION, filtrationService);
         sce.getServletContext().setAttribute(Constants.SERVICE_FILE, fileService);
         sce.getServletContext().setAttribute(Constants.ONLINE_USERS, onlineUsers);

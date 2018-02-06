@@ -16,10 +16,7 @@ import ua.nure.antoniuk.util.Role;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
@@ -131,6 +128,7 @@ public class UserService {
         return transactionManager.executeWithoutTransaction(() -> {
             PortfolioDTO portfolioDTO = userDAO.getPortfolio(id);
             if (Objects.isNull(portfolioDTO)) {
+                portfolioDTO = new PortfolioDTO();
                 portfolioDTO.setUnnamed();
             }
             return portfolioDTO;
@@ -139,5 +137,25 @@ public class UserService {
 
     public List<User> getUsers() {
         return transactionManager.executeWithoutTransaction(() -> userDAO.getUsers());
+    }
+
+    public User getDriverByIdCar(int i) {
+        return transactionManager.execute(() -> userDAO.getDriverByIdCar(i).orElseGet(User::new));
+    }
+
+    public boolean isDriverOnRoad(int idUser) {
+        return transactionManager.execute(() -> {
+            List<Car> cars = carDAO.getCarsByIdDriver(idUser);
+            for (Car c : cars) {
+                if (carDAO.isOnRoad(c.getId())) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    public boolean updateUser(User user) {
+        return transactionManager.execute(() -> userDAO.update(user));
     }
 }

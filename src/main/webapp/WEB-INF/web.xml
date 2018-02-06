@@ -18,6 +18,18 @@
     <error-code>404</error-code>
     <location>/WEB-INF/pages/404.jsp</location>
   </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/WEB-INF/pages/403.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>401</error-code>
+    <location>/WEB-INF/pages/401.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/WEB-INF/pages/500.jsp</location>
+  </error-page>
   <welcome-file-list>
     <welcome-file>main</welcome-file>
   </welcome-file-list>

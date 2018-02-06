@@ -5,6 +5,7 @@ import ua.nure.antoniuk.db.dao.UserDAO;
 import ua.nure.antoniuk.db.transaction.ConnectionManager;
 import ua.nure.antoniuk.dto.PortfolioDTO;
 import ua.nure.antoniuk.entity.User;
+import ua.nure.antoniuk.exceptions.DBException;
 import ua.nure.antoniuk.util.Util;
 
 import java.sql.*;
@@ -22,6 +23,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String CALL_TRY_TO_LOGIN = "{? = call try_to_login(?,?)}";
     private static final String GET_ALL_USERS = "SELECT * FROM users";
     private static final String GET_PORTFOLIO_BY_ID = "CALL get_portfolio(?)";
+    private static final String GET_DRIVER_BY_ID_CAR = "SELECT u.* FROM users u INNER JOIN cars ON u.id = cars.id_driver WHERE cars.id = ? LIMIT 1";
 
     @Override
     public Optional<User> getByEmail(String email) {
@@ -99,6 +101,7 @@ public class UserDAOImpl implements UserDAO {
             ResultSet resultSet = callableStatement.executeQuery();
             if (resultSet.next()) {
                 portfolioDTO = new PortfolioDTO();
+                portfolioDTO.setIdUser(String.valueOf(resultSet.getInt("id")));
                 portfolioDTO.setUsername(resultSet.getString("name"));
                 portfolioDTO.setSurname(resultSet.getString("surname"));
                 portfolioDTO.setEmail(resultSet.getString("email"));
@@ -112,6 +115,24 @@ public class UserDAOImpl implements UserDAO {
             throw new RuntimeException(e);
         }
         return portfolioDTO;
+    }
+
+    @Override
+    public Optional<User> getDriverByIdCar(int idCar) {
+        Optional<User> user = Optional.empty();
+        Connection connection = ConnectionManager.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_DRIVER_BY_ID_CAR)) {
+            preparedStatement.setInt(1, idCar);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = Optional.of(extractUser(resultSet));
+            }
+            //LOGGER.trace(user);
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            throw new DBException("Get driver by id car", e);
+        }
+        return user;
     }
 
     @Override

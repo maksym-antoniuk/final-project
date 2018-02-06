@@ -32,6 +32,7 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
             }
         }
         se.getSession().setAttribute(Attributes.SESSION_LOCALE, Constants.LOCALE_RU);
+        se.getSession().setAttribute(Attributes.SESSION_THEME, Constants.THEME_RED);
         se.getSession().setMaxInactiveInterval(1800);
         LOGGER.trace("new SESSION=" + se.getSession());
     }

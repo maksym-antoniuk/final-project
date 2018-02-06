@@ -97,7 +97,7 @@ public class Journey implements Serializable {
     }
 
     public String getDateFinish() {
-        return new SimpleDateFormat("dd-MM-yy HH:mm").format(dateFinish.getTime());
+        return Objects.isNull(dateFinish) ? "" : new SimpleDateFormat("dd-MM-yy HH:mm").format(dateFinish.getTime());
     }
 
     public void setDateFinish(Calendar dateFinish) {

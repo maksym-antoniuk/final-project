@@ -22,10 +22,12 @@ public class JourneyService {
     private JourneyDAO journeyDAO;
     private CarDAO carDAO;
     private UserDAO userDAO;
+    private UserService userSevice;
     TransactionManager transactionManager;
 
 
-    public JourneyService(JourneyDAO journeyDAO, TransactionManager transactionManager, CarDAO carDAO, UserDAO userDAO) {
+    public JourneyService(JourneyDAO journeyDAO, TransactionManager transactionManager, CarDAO carDAO, UserDAO userDAO, UserService userSevice) {
+        this.userSevice = userSevice;
         this.journeyDAO = journeyDAO;
         this.transactionManager = transactionManager;
         this.carDAO = carDAO;
@@ -60,9 +62,9 @@ public class JourneyService {
             if (carDAO.isRegisteredOnJourney(journeyId, carId)) {
                 return "Car already subscribed";
             }
-            if (carDAO.isOnRoad(carId)) {
-                return "Car now in journey";
-            }
+            //if (carDAO.isOnRoad(carId)) {
+              //  return "Car now in journey";
+            //}
             journeyDAO.setCarToJourney(journeyId, carId);
             return "";
         });
@@ -87,8 +89,11 @@ public class JourneyService {
             if (!journey.isSuit(carDAO.read(carId).get())) {
                 return "Car don't suit for this journey";
             }
-            if (carDAO.isOnRoad(carId)) {
-                return "Car now in journey";
+            List<Car> cars = carDAO.getCarsByIdDriver(userDAO.getDriverByIdCar(carId).get().getId());
+            for (Car c : cars) {
+                if (carDAO.isOnRoad(c.getId())) {
+                    return "Driver now in journey";
+                }
             }
             journeyDAO.acceptCarToJourney(journeyId, carId);
             journey.setStatus(StatusJourney.ON_PROCESS);

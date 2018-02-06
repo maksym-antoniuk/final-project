@@ -1,14 +1,25 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<head>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/upload.css">
+</head>
 <footer class="w3-container w3-animate-opacity w3-black">
-    <p class="w3-text-deep-purple">Language
+    <p class="w3-text-red"><b><fmt:message key="footer.lang"/>
         <select id="language" class="" style="width: 10%" name="lang" required>
             <option value="en" <c:if test="${sessionScope.locale eq 'en'}">selected</c:if>>English</option>
             <option value="ru" <c:if test="${sessionScope.locale eq 'ru'}">selected</c:if>>Русский</option>
-        </select>
-    <p class="w3-center w3-text-deep-purple">Antoniuk Maksym Summary Task 4 @2018</p></p>
+        </select></b>
+        <b class="w3-right"><select id="theme" class=" w3-threequarter" name="theme" required>
+            <option value="red" <c:if test="${sessionScope.theme eq 'red'}">selected</c:if>><fmt:message key="theme.red"/> </option>
+            <option value="deep-purple" <c:if test="${sessionScope.theme eq 'deep-purple'}">selected</c:if>><fmt:message key="theme.purple"/></option>
+            <option value="blue" <c:if test="${sessionScope.theme eq 'blue'}">selected</c:if>><fmt:message key="theme.blue"/></option>
+            <option value="green" <c:if test="${sessionScope.theme eq 'green'}">selected</c:if>><fmt:message key="theme.green"/></option>
+        </select> <fmt:message key="footer.theme"/> </b>
+    <p class="w3-center w3-text-red">Antoniuk Maksym Summary Task 4 @2018</p></p>
     <c:if test="${sessionScope.user != null}">
-        <p class="w3-center w3-text-deep-purple">Online: <m:online/></p>
+        <p class="w3-center w3-text-red"><fmt:message key="footer.online"/>: <m:online/></p>
     </c:if>
-    <p class="w3-center w3-text-deep-purple"><a href="${pageContext.request.contextPath}/main">Back Home <i class="fa fa-home w3-xlarge"></i></a></p>
+    <p class="w3-center w3-text-red"><a href="${pageContext.request.contextPath}/main"><fmt:message key="footer.back"/> <i class="fa fa-home w3-xlarge"></i> <fmt:message key="footer.home"/></a></p>
 </footer>
 <script src="${pageContext.request.contextPath}/scripts/global.js"></script>

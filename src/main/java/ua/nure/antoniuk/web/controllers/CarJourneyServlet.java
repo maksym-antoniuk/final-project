@@ -3,6 +3,7 @@ package ua.nure.antoniuk.web.controllers;
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.services.CarService;
 import ua.nure.antoniuk.services.JourneyService;
+import ua.nure.antoniuk.services.UserService;
 import ua.nure.antoniuk.util.*;
 
 import javax.servlet.ServletConfig;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Objects;
 
 @WebServlet(name = "CarJourneyServlet", urlPatterns = Mapping.SERVLET_CAR_JOURNEY_URL)
@@ -20,12 +22,15 @@ public class CarJourneyServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(CarJourneyServlet.class);
     private JourneyService journeyService;
     private CarService carService;
+    private UserService userService;
+    private EmailSender emailSender;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String error;
+        LOGGER.trace(request.getParameter("journeyid"));
         if (!Objects.isNull(request.getParameter(Parameters.ADD_CAR_TO_JOURNEY))) {
             if (!Util.isMatch("\\d+", request.getParameter("journeyid")) || !Util.isMatch("\\d+", request.getParameter("carid"))) {
-                error = "Incorect data";
+                error = "Incorrect data";
             } else {
                 LOGGER.trace("journey " + request.getParameter("journeyid") + " car " + request.getParameter("carid"));
                 error = journeyService.addCarToJourney(Integer.parseInt(request.getParameter("journeyid")), Integer.parseInt(request.getParameter("carid")));
@@ -35,12 +40,16 @@ public class CarJourneyServlet extends HttpServlet {
             response.sendRedirect(Mapping.SERVLET_CAR_JOURNEY);
         }
         if (!Objects.isNull(request.getParameter(Parameters.ACCEPT_CAR_TO_JOURNEY))) {
-            if (!Util.isMatch("\\d+", request.getParameter("journeyid")) || !Util.isMatch("\\d+", request.getParameter("carid"))) {
-                LOGGER.trace("journey BAD " + request.getParameter("journeyid") + " car " + request.getParameter("carid"));
-                error = "Incorect data";
-            } else {
+            if (Util.isMatch("\\d+", request.getParameter("journeyid")) && Util.isMatch("\\d+", request.getParameter("carid"))) {
                 LOGGER.trace("journey " + request.getParameter("journeyid") + " car " + request.getParameter("carid"));
                 error = journeyService.acceptToJourney(Integer.parseInt(request.getParameter("journeyid")), Integer.parseInt(request.getParameter("carid")));
+                if ("".equals(error)) {
+                    emailSender.sendMessage(userService.getDriverByIdCar(Integer.parseInt(request.getParameter("carid"))), Util.getHeaderEmail(), Util.acceptToJourney());
+                }
+
+            } else {
+                LOGGER.trace("journey BAD " + request.getParameter("journeyid") + " car " + request.getParameter("carid"));
+                error = "Incorrect data";
             }
             request.getSession().setAttribute(Attributes.SESSION_ERROR_ACCEPT_CAR_TO_JOURNEY, error);
             LOGGER.error(error);
@@ -70,6 +79,8 @@ public class CarJourneyServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         journeyService = (JourneyService) config.getServletContext().getAttribute(Constants.SERVICE_JOURNEY);
         carService = (CarService) config.getServletContext().getAttribute(Constants.SERVICE_CAR);
+        userService = (UserService) config.getServletContext().getAttribute(Constants.SERVICE_USER);
+        emailSender = (EmailSender) config.getServletContext().getAttribute(Attributes.CONTEXT_SENDER);
         LOGGER.trace("Car Journey Servlet init");
     }
 }

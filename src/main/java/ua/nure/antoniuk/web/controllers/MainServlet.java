@@ -1,6 +1,7 @@
 package ua.nure.antoniuk.web.controllers;
 
 import org.apache.log4j.Logger;
+import ua.nure.antoniuk.util.Constants;
 import ua.nure.antoniuk.util.Mapping;
 
 import javax.servlet.ServletException;
@@ -19,6 +20,8 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(Constants.REGISTRATION_ERROR, request.getSession().getAttribute(Constants.REGISTRATION_ERROR));
+        request.getSession().removeAttribute(Constants.REGISTRATION_ERROR);
         request.getRequestDispatcher(Mapping.JSP_INDEX).forward(request, response);
         LOGGER.trace("Main Servlet GET");
     }

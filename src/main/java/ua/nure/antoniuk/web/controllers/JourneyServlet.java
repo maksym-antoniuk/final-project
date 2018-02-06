@@ -31,8 +31,13 @@ public class JourneyServlet extends HttpServlet {
     private JourneyService journeyService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<String, String> errors;
+
+        Map<String, String> errors = null;
         if (!Objects.isNull(request.getParameter("add"))) {
+            if (((User) request.getSession().getAttribute(Attributes.SESSION_USER)).getRole().equals(Role.DRIVER)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
             JourneyDTO journeyDTO = new JourneyDTO().setFromRequest(request);
             errors = journeyValidator.validate(journeyDTO);
             if (errors.isEmpty()) {
@@ -40,22 +45,36 @@ public class JourneyServlet extends HttpServlet {
                 journey.setIdManager(((User)request.getSession().getAttribute(Constants.SESSION_USER)).getId());
                 journeyService.create(journey);
                 LOGGER.trace("create journey");
+                errors.put("Good!", "Journey was added");
+            } else {
+                request.getSession().setAttribute(Attributes.SESSION_CREATE_JOURNEY_DTO, journeyDTO);
             }
         } else if (!Objects.isNull(request.getParameter("cancel"))) {
+            if (((User) request.getSession().getAttribute(Attributes.SESSION_USER)).getRole().equals(Role.DRIVER)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            errors = new HashMap<>();
             if (Util.isMatch("\\d+", request.getParameter("cancel"))) {
                 journeyService.cancel(Integer.parseInt(request.getParameter("cancel")));
+                errors.put("Good!", "Journey was canceled");
             } else {
-                errors = new HashMap<>();
                 errors.put("Danger!", Constants.INVALID_FORMAT);
             }
         } else if (!Objects.isNull(request.getParameter("confirm"))) {
+            if (!((User) request.getSession().getAttribute(Attributes.SESSION_USER)).getRole().equals(Role.DRIVER)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            errors = new HashMap<>();
             if (Util.isMatch("\\d+", request.getParameter("confirm"))) {
                 journeyService.confirm(Integer.parseInt(request.getParameter("confirm")), (User) request.getSession().getAttribute(Constants.SESSION_USER));
+                errors.put("Good!", "Journey was confirmed");
             } else {
-                errors = new HashMap<>();
                 errors.put("Danger!", Constants.INVALID_FORMAT);
             }
         }
+        request.getSession().setAttribute(Attributes.SESSION_ERROR_CREATE_JOURNEY, errors);
         response.sendRedirect(Mapping.SERVLET_JOURNEY);
     }
 
@@ -63,6 +82,10 @@ public class JourneyServlet extends HttpServlet {
         //request.setAttribute("journeys", journeyService.getJourneys());
         List<JourneyDisplayDTO> journeyDisplayDTO = journeyService.getJourneys((FilterJourney) request.getSession().getAttribute(Attributes.SESSION_FILTER_JOURNEY));
         request.setAttribute("journeys", journeyDisplayDTO);
+        request.setAttribute(Attributes.SESSION_ERROR_CREATE_JOURNEY, request.getSession().getAttribute(Attributes.SESSION_ERROR_CREATE_JOURNEY));
+        request.setAttribute(Attributes.SESSION_CREATE_JOURNEY_DTO, request.getSession().getAttribute(Attributes.SESSION_CREATE_JOURNEY_DTO));
+        request.getSession().removeAttribute(Attributes.SESSION_CREATE_JOURNEY_DTO);
+        request.getSession().removeAttribute(Attributes.SESSION_ERROR_CREATE_JOURNEY);
         request.getRequestDispatcher(Mapping.JSP_JOURNEYS).forward(request, response);
     }
 

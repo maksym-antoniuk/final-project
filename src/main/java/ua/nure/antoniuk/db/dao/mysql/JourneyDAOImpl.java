@@ -227,7 +227,9 @@ public class JourneyDAOImpl implements JourneyDAO {
         journey.setVolume(resultSet.getFloat("volume"));
         journey.setIdManager(resultSet.getInt("id_manager"));
         if (!Objects.isNull(resultSet.getTimestamp("date_finish"))) {
-            journey.setDateFinish(Util.getCalendarByDate(resultSet.getDate("date_finish")));
+            journey.setDateFinish(Util.getCalendarByDate(resultSet.getTimestamp("date_finish")));
+        } else {
+            journey.setDateFinish(null);
         }
         journey.setFrom(resultSet.getString("from"));
         journey.setWhere(resultSet.getString("where"));

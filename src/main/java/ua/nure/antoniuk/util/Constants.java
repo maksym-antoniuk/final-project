@@ -96,6 +96,11 @@ public abstract class Constants {
     public static final String LOCALE_EN = "en";
     public static final String LOCALE_RU = "ru";
 
+    public static final String THEME_RED = "red";
+    public static final String THEME_DEEP_PURPLE = "deep-purple";
+    public static final String THEME_GREEN = "green";
+    public static final String THEME_BLUE = "blue";
+
     //Session attributes
     public static final String SESSION_USER = "user";
 

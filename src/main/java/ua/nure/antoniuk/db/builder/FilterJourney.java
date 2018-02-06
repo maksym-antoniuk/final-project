@@ -172,7 +172,7 @@ public class FilterJourney extends Filter {
     }
 
     private String fields() {
-        return "SELECT j.*, count(jc.cars_id), if(jc.accept = 'yes',c.id_driver, 0) FROM journeys j LEFT OUTER JOIN journeys_has_cars jc ON j.id = journeys_id LEFT OUTER JOIN cars c ON cars_id = c.id";
+        return "SELECT j.*, count(jc.cars_id), if(j.id IN (select id from journeys INNER JOIN journeys_has_cars on id=journeys_id where accept='yes'), c.id_driver, 0) FROM journeys j LEFT OUTER JOIN journeys_has_cars jc ON j.id = journeys_id LEFT OUTER JOIN cars c ON cars_id = c.id";
     }
 
     private String where(){

@@ -10,6 +10,7 @@ $('.portfolioButton').click(function () {
     $.get('/Base/portfolio', {
             userId: managerid
         }, function (data) {
+            $('#us_img').attr('src', getContextPath().concat('/resources/image/user/').concat(data.idUser).concat('.jpg'));
             $('#us_name').text(data.username);
             $('#us_surname').text(data.surname);
             $('#us_email').text(data.email);

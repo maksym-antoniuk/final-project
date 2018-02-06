@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="m" uri="../mytag.tld" %>
+<%@ taglib prefix="m" uri="/WEB-INF/mytag.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="ma" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   Created by IntelliJ IDEA.
   User: maxim
@@ -9,13 +10,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}" />
+<fmt:setBundle basename="lang"/>
 <html>
 <head>
     <title>Potential users</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/w31.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/${sessionScope.theme}.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/font-awesome.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <!-- NAVIGATION -->
@@ -23,24 +27,24 @@
 
 
 <div class="w3-container" id="mytabs">
-    <h2>Potential Users</h2>
+    <h2><fmt:message key="nav.potential.user"/></h2>
 
 
     <div class="w3-bar w3-black">
-        <button class="w3-bar-item w3-button tablink w3-red" onclick="openRole(event,'manager')">Manager</button>
-        <button class="w3-bar-item w3-button tablink" onclick="openRole(event,'driver')">Driver</button>
+        <button class="w3-bar-item w3-button tablink w3-red" onclick="openRole(event,'manager')"><fmt:message key="manager"/></button>
+        <button class="w3-bar-item w3-button tablink" onclick="openRole(event,'driver')"><fmt:message key="driver"/></button>
     </div>
 
     <div id="manager" class="w3-container w3-border role">
-        <h2>Manager</h2>
+        <h2><fmt:message key="manager"/></h2>
         <div class="w3-container">
             <div class="w3-section">
                 <table class="w3-table-all">
                     <tr class="w3-red">
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Email</th>
-                        <th>Phone</th>
+                        <th><fmt:message key="label.name"/></th>
+                        <th><fmt:message key="label.surname"/></th>
+                        <th><fmt:message key="label.email"/></th>
+                        <th><fmt:message key="label.phone"/></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -73,21 +77,21 @@
     </div>
 
     <div id="driver" class="w3-container w3-border role" style="display: none">
-        <h2>Driver</h2>
+        <h2><fmt:message key="driver"/></h2>
         <div class="w3-container">
             <div class="w3-section w3-responsive">
                 <table class="w3-table-all">
                     <tr class="w3-red">
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Car Number</th>
-                        <th>Car Mark</th>
-                        <th>Car Model</th>
-                        <th>Bodywork</th>
-                        <th>Capacity</th>
-                        <th>Volume</th>
+                        <th><fmt:message key="label.name"/></th>
+                        <th><fmt:message key="label.surname"/></th>
+                        <th><fmt:message key="label.email"/></th>
+                        <th><fmt:message key="label.phone"/></th>
+                        <th><fmt:message key="label.car.number"/></th>
+                        <th><fmt:message key="label.car.mark"/></th>
+                        <th><fmt:message key="label.car.model"/></th>
+                        <th><fmt:message key="label.type.bodywork"/></th>
+                        <th><fmt:message key="label.car.capacity"/></th>
+                        <th><fmt:message key="label.car.volume"/></th>
                         <th></th>
                         <th></th>
                     </tr>

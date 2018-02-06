@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="m" uri="../mytag.tld" %>
+<%@ taglib prefix="m" uri="/WEB-INF/mytag.tld" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="ma" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   Created by IntelliJ IDEA.
   User: maxim
@@ -9,33 +10,35 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}" />
+<fmt:setBundle basename="lang"/>
 <html>
 <head>
     <title>Summary Task 4</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/w31.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/${sessionScope.theme}.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/scripts/jquery-1.10.2.js" type="text/javascript"></script>
     <link rel="icon" href="${pageContext.request.contextPath}/img/logo.png" type="image/png" sizes="16x16">
 </head>
 <body>
 <!-- NAVIGATION -->
 <ma:nav/>
-<h2>Cars</h2>
+<h2><fmt:message key="nav.cars"/></h2>
 <div class="w3-container">
     <div class="w3-section">
         <table class="w3-table-all">
             <tr class="w3-red">
-                <th>Id</th>
-                <th>User</th>
-                <th>Status</th>
-                <th>Number</th>
-                <th>Mark</th>
-                <th>Model</th>
-                <th>Bodywork</th>
-                <th>Capacity</th>
-                <th>Max Volume</th>
+                <th><fmt:message key="col.id"/></th>
+                <th><fmt:message key="driver"/></th>
+                <th><fmt:message key="col.status"/></th>
+                <th><fmt:message key="label.car.number"/></th>
+                <th><fmt:message key="label.car.mark"/></th>
+                <th><fmt:message key="label.car.model"/></th>
+                <th><fmt:message key="label.type.bodywork"/></th>
+                <th><fmt:message key="label.car.capacity"/></th>
+                <th><fmt:message key="label.car.volume"/></th>
                 <th></th>
                 <th></th>
             </tr>

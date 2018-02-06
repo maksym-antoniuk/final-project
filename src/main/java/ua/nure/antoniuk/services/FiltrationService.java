@@ -68,7 +68,10 @@ public class FiltrationService {
                 filterJourney.setAscPrice(null);
                 filterJourney.setAscCapacity(null);
                 filterJourney.setAscVolume(null);
-                filterJourney.setStatusJourneys(Arrays.asList(StatusJourney.OLD));
+                if (!filterJourney.getStatusJourneys().contains(StatusJourney.OLD)) {
+                    filterJourney.getStatusJourneys().add(StatusJourney.OLD);
+                }
+                filterJourney.getStatusJourneys().removeIf(p -> !p.equals(StatusJourney.OLD));
                 break;
             }
             case STATUS_NEW:{

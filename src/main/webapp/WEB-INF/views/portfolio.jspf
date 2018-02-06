@@ -1,37 +1,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="portfolio" class="w3-modal">
-    <div class="w3-modal-content">
+    <div class="w3-modal-content w3-center">
         <header class="w3-container w3-red">
             <span class="w3-closebtn" id="closePortfolio">&times;</span>
             <h2>Портфолио</h2>
         </header>
-        <div class="w3-container w3-modal-content">
-            <table class="w3-table">
-                <tr class="w3-threequarter">
-                    <td>Name</td>
-                    <td id="us_name"></td>
-                </tr>
-                <tr class="w3-threequarter">
-                    <td>Surname</td>
-                    <td id="us_surname"></td>
-                </tr>
-                <tr class="w3-threequarter">
-                    <td>Email</td>
-                    <td id="us_email"></td>
-                </tr>
-                <tr class="w3-threequarter">
-                    <td>Phone</td>
-                    <td id="us_phone"></td>
-                </tr>
-                <tr class="w3-threequarter">
-                    <td>Role</td>
-                    <td id="us_role"></td>
-                </tr>
-                <tr class="w3-threequarter">
-                    <td>Days</td>
-                    <td id="us_days"></td>
-                </tr>
-            </table>
+        <div class="w3-container w3-modal-content w3-center">
+            <div class="w3-col l3 m6 w3-margin-bottom w3-row-padding w3-red car-card" style="width: 300px; margin-left: 6px; margin-right: 6px;">
+                <div class="w3-display-container w3-red" style="margin-left: -8px" onmouseover="">
+                    <img id="us_img" src="" alt="Fjords" onerror="this.src = '${pageContext.request.contextPath}/img/default-user.png'" style="object-fit: cover;width:300px; height: 300px;">
+                    <div class="w3-display-topleft w3-black w3-padding" ><i id="us_name"></i> <i id="us_surname"></i></div>
+                    <c:if test="${car.status.status eq 'broken'}">
+                        <div class="w3-display-middle w3-border-red w3-text-red w3-padding w3-text-shadow" style=" border:4px solid"><h1><strong>BROKEN</strong></h1></div>
+                    </c:if>
+                </div>
+                <div  style="margin-top: 20px" class="w3-text-white">
+                    <p style="margin-top: -15px"><b><fmt:message key="label.email"/>:</b> <i id="us_email"></i></p>
+                    <p style="margin-top: -15px"><b><fmt:message key="label.phone"/>:</b> <i id="us_phone"></i></p>
+                    <p style="margin-top: -15px"><b><fmt:message key="col.role"/>:</b> <i id="us_role"></i> <b><fmt:message key="label.days"/>:<i id="us_days"></i></b></p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
