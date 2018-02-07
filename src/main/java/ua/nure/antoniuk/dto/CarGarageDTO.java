@@ -9,6 +9,7 @@ public class CarGarageDTO {
     private Car car;
     private int countSubscribed;
     private int countPerformed;
+    private int sum;
 
     public Car getCar() {
         return car;
@@ -16,6 +17,15 @@ public class CarGarageDTO {
 
     public CarGarageDTO setCar(Car car) {
         this.car = car;
+        return this;
+    }
+
+    public int getSum() {
+        return sum;
+    }
+
+    public CarGarageDTO setSum(int sum) {
+        this.sum = sum;
         return this;
     }
 

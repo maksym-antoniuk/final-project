@@ -63,8 +63,8 @@
                                 <option value="car" <c:if test="${car.bodywork.bodywork eq 'car'}">selected</c:if>>Car</option>
                             </select>
                         </td>
-                        <td><input id="cap${car.id}" class="w3-input w3-border" name="capacity" value="${car.maxWeight}"></td>
-                        <td><input id="vol${car.id}"class="w3-input w3-border" name="volume" value="${car.maxVolume}"></td>
+                        <td><input pattern="\d*\.?\d*" id="cap${car.id}" class="w3-input w3-border" name="capacity" value="${car.maxWeight}"></td>
+                        <td><input pattern="\d*\.?\d*" id="vol${car.id}"class="w3-input w3-border" name="volume" value="${car.maxVolume}"></td>
                         <td>
                             <button class="w3-button" style="background: none"
                                     onclick="editCar('${car.id}',$('#num${car.id}'),$('#type${car.id}'),$('#cap${car.id}'), $('#vol${car.id}'))"><i
@@ -77,6 +77,36 @@
         </table>
     </div>
 </div>
+
+<c:if test="${requestScope.errorEditCar != null}">
+    <c:if test="${requestScope.errorEditCar eq ''}">
+        <div class="w3-modal" style="display: block">
+            <div class="w3-modal-content w3-animate-zoom">
+                <div class="w3-panel w3-green w3-display-container">
+                <span onclick="this.parentElement.parentElement.parentElement.style.display='none'"
+                      class="w3-button w3-green w3-large w3-display-topright">&times;</span>
+                    <h3><fmt:message key="message.good"/></h3>
+                    <p>Car edited</p>
+                </div>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${requestScope.errorEditCar ne ''}">
+        <div class="w3-modal" style="display: block">
+            <div class="w3-modal-content w3-animate-zoom">
+                <div class="w3-panel w3-redd w3-display-container">
+                <span onclick="this.parentElement.parentElement.parentElement.style.display='none'"
+                      class="w3-button w3-redd w3-large w3-display-topright">&times;</span>
+                    <c:forEach var="error" items="${errorEditCar}">
+                        <h3>${error.key}</h3>
+                        <p>${error.value}</p>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+    </c:if>
+</c:if>
+
 <%@include file="/WEB-INF/views/portfolio.jspf" %>
 <%@include file="/WEB-INF/views/footer.jspf" %>
 <script src="${pageContext.request.contextPath}/scripts/global.js"></script>

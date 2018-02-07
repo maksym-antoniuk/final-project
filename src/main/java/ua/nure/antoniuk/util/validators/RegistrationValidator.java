@@ -3,13 +3,11 @@ package ua.nure.antoniuk.util.validators;
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.dto.DriverRegDTO;
 import ua.nure.antoniuk.dto.ManagerRegDTO;
-import ua.nure.antoniuk.util.Bodywork;
 import ua.nure.antoniuk.util.Constants;
 import ua.nure.antoniuk.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 public class RegistrationValidator {
     private final static Logger LOGGER = Logger.getLogger(RegistrationValidator.class);

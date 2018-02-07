@@ -106,4 +106,17 @@ public class CarDTO {
         car.setBodywork(Bodywork.valueOf(bodywork.toUpperCase()));
         return car;
     }
+
+    @Override
+    public String toString() {
+        return "CarDTO{" +
+                "id='" + id + '\'' +
+                ", carNumber='" + carNumber + '\'' +
+                ", carMark='" + carMark + '\'' +
+                ", carModel='" + carModel + '\'' +
+                ", bodywork='" + bodywork + '\'' +
+                ", capacity='" + capacity + '\'' +
+                ", volume='" + volume + '\'' +
+                '}';
+    }
 }

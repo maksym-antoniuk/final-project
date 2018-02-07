@@ -2,7 +2,6 @@ package ua.nure.antoniuk.util.validators;
 
 import org.apache.log4j.Logger;
 import ua.nure.antoniuk.dto.JourneyDTO;
-import ua.nure.antoniuk.entity.Journey;
 import ua.nure.antoniuk.util.Constants;
 import ua.nure.antoniuk.util.Material;
 import ua.nure.antoniuk.util.Util;

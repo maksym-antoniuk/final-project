@@ -39,6 +39,7 @@ public class EmailSender {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
                 message.setSubject(header);
                 message.setText(body);
+                LOGGER.trace(user + header);
                 Transport.send(message);
             } catch (MessagingException e) {
 

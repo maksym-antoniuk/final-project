@@ -26,12 +26,13 @@ public class CarDAOImpl implements CarDAO {
     private static final String IS_ON_ROAD = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id INNER JOIN journeys j ON car.journeys_id = j.id WHERE car.cars_id = ? AND car.accept = 'yes' AND j.status = 'on_process' AND exist = 'yes'";
     private static final String GET_CAR_BY_ID = "SELECT * FROM cars WHERE id = ? AND exist = 'yes'";
     private static final String GET_JOURNEY_CARS = "SELECT * FROM cars INNER JOIN journeys_has_cars car ON cars.id = car.cars_id WHERE car.journeys_id = ? ";
-    private static final String GET_GARAGE_BY_ID = "SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, count(jc.accept), 0 " +
-            "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'yes' AND c.id_driver = ? AND c.exist = 'yes' GROUP BY jc.cars_id " +
-            "UNION SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, count(jc.accept) " +
-            "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'no' AND c.id_driver = ? AND c.exist = 'yes' GROUP BY jc.cars_id " +
-            "UNION SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, 0 " +
-            "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE c.id_driver = ? AND c.exist = 'yes' GROUP BY c.id;";
+    private static final String GET_GARAGE_BY_ID = "SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, count(jc.accept), 0 , sum(j.price) " +
+    " FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id " +
+    " Inner join journeys j on j.id = jc.journeys_id WHERE jc.accept = 'yes' AND c.id_driver = ? AND c.exist = 'yes' GROUP BY jc.cars_id " +
+    "UNION SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, count(jc.accept) , 0 " +
+    "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE jc.accept = 'no' AND c.id_driver = ? AND c.exist = 'yes' GROUP BY jc.cars_id " +
+    "UNION SELECT c.id, c.number, c.mark, c.model, c.exist, c.type_bodywork, c.max_weight, c.max_volume, c.id_driver, c.status, 0, 0, 0 " +
+    "FROM final.cars c LEFT OUTER JOIN final.journeys_has_cars jc ON c.id = jc.cars_id WHERE c.id_driver = ? AND c.exist = 'yes' GROUP BY c.id";
     private static final String UPDATE_CAR = "UPDATE cars SET number = ?, max_weight = ?, max_volume = ?, type_bodywork = ?, status = ?, exist = ? WHERE id = ?";
     private static final String IS_EXIST_NUMBER = "SELECT * FROM cars WHERE number = ? LIMIT 1";
     private static final String DELETE_CAR = "UPDATE cars SET exist = 'no' WHERE id=?";
@@ -211,7 +212,7 @@ public class CarDAOImpl implements CarDAO {
             List<Integer> list = new ArrayList<>();
             while (resultSet.next()) {
                 if (!list.contains(resultSet.getInt("id"))) {
-                    cars.add(new CarGarageDTO().setCar(extract(resultSet)).setCountPerformed(resultSet.getInt(11)).setCountSubscribed(resultSet.getInt(11) + resultSet.getInt(12)));
+                    cars.add(new CarGarageDTO().setCar(extract(resultSet)).setCountPerformed(resultSet.getInt(11)).setCountSubscribed(resultSet.getInt(11) + resultSet.getInt(12)).setSum(resultSet.getInt(13)));
                     list.add(resultSet.getInt("id"));
                 }
             }

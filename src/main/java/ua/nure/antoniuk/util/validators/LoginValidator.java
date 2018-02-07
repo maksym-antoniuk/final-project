@@ -5,10 +5,8 @@ import ua.nure.antoniuk.dto.LoginDTO;
 import ua.nure.antoniuk.util.Constants;
 import ua.nure.antoniuk.util.Util;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class LoginValidator {
     private final static Logger LOGGER = Logger.getLogger(LoginValidator.class);

@@ -80,6 +80,7 @@
                     <p style="margin-top: -15px"><b><fmt:message key="label.car.capacity"/>:</b> ${car.car.maxWeight} <b><fmt:message key="label.car.volume"/>:</b> ${car.car.maxVolume}</p>
                     <p style="margin-top: -15px"><b><fmt:message key="label.type.bodywork"/>:</b> ${car.car.bodywork.bodywork}</p>
                     <p style="margin-top: -15px"><b><fmt:message key="label.subscribed"/>:</b> ${car.countSubscribed} <b><fmt:message key="label.performed"/>:</b> ${car.countPerformed}</p>
+                    <p style="margin-top: -15px"><b><fmt:message key="label.sumMoney"/>:</b> ${car.sum}</p>
                 </div>
             </div>
         <%--</c:forEach>--%>

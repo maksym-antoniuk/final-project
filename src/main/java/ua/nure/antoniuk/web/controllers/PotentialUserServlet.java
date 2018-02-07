@@ -36,6 +36,7 @@ public class PotentialUserServlet extends HttpServlet {
             LOGGER.trace(pass);
             user.setSalary(Float.parseFloat(request.getParameter("salary")));
             userService.create(user, potentialUser);
+            LOGGER.trace(user);
             sender.sendMessage(user, Util.getHeaderEmail(), Util.getAcceptUserRegistration(user));
             //Util.sendPassword(user);
         } else if (!Objects.isNull(request.getParameter("addDriver"))) {
@@ -56,6 +57,7 @@ public class PotentialUserServlet extends HttpServlet {
             PotentialUser potentialUser = userService.getPotentialUserById(Integer.parseInt(request.getParameter("cancel")));
             userService.cancel(potentialUser);
             sender.sendMessage(userService.potentialUserToUser(potentialUser), Util.getHeaderEmail(), Util.getCancelUserRegistration(userService.potentialUserToUser(potentialUser)));
+            Util.sendCancel(userService.potentialUserToUser(potentialUser));
         }
         request.getParameter("cancel");
         response.sendRedirect(Mapping.SERVLET_POTENTIAL_USER);

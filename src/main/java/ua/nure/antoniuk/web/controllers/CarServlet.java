@@ -63,13 +63,14 @@ public class CarServlet extends HttpServlet {
             response.sendRedirect(Mapping.SERVLET_CAR);
         } else if (!Objects.isNull(request.getParameter(Parameters.EDIT_CAR))) {
                 CarDTO carDTO = new CarDTO(request);
+                LOGGER.trace(carDTO);
                 Map<String, String> errors = carService.validateEditCar(carDTO);
                 if (errors.isEmpty()) {
                     Car car = carDTO.toCar();
                     car.setId(Integer.parseInt(request.getParameter(Parameters.EDIT_CAR)));
                     carService.update(car);
                     carService.updateGarage(request, userService.getDriverByIdCar(Integer.parseInt(request.getParameter(Parameters.EDIT_CAR))).getId());
-                    request.getSession().setAttribute("goodEdit", "as");
+                    request.getSession().setAttribute(Attributes.SESSION_ERROR_EDIT_CAR, "");
                 } else {
                     request.getSession().setAttribute(Attributes.SESSION_ERROR_EDIT_CAR, errors);
                 }
@@ -84,8 +85,8 @@ public class CarServlet extends HttpServlet {
         }
         request.setAttribute(Constants.ALL_CARS, carService.getAllCars());
         request.setAttribute(Attributes.SESSION_ERROR_EDIT_CAR, request.getSession().getAttribute(Attributes.SESSION_ERROR_EDIT_CAR));
-        request.setAttribute("goodEdit", request.getSession().getAttribute("goodEdit"));
-        request.getSession().removeAttribute("goodEdit");
+        //request.setAttribute("goodEdit", request.getSession().getAttribute("goodEdit"));
+        //request.getSession().removeAttribute("goodEdit");
         request.getSession().removeAttribute(Attributes.SESSION_ERROR_EDIT_CAR);
         request.getRequestDispatcher(Mapping.JSP_CARS).forward(request, response);
     }

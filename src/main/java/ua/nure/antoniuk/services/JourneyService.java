@@ -116,7 +116,9 @@ public class JourneyService {
     public boolean confirm(int confirm, User user) {
         return transactionManager.execute(() -> {
             Journey journey = journeyDAO.read(confirm).get();
+            LOGGER.trace(journey + " " + user);
             user.setSalary(user.getSalary() + journey.getPrice());
+            LOGGER.trace(journey + " " + user);
             userDAO.update(user);
             return journeyDAO.confirm(confirm);
         });

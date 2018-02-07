@@ -1,7 +1,6 @@
 package ua.nure.antoniuk.web.controllers;
 
 import org.apache.log4j.Logger;
-import ua.nure.antoniuk.db.builder.Filter;
 import ua.nure.antoniuk.db.builder.FilterJourney;
 import ua.nure.antoniuk.dto.JourneyDTO;
 import ua.nure.antoniuk.dto.JourneyDisplayDTO;

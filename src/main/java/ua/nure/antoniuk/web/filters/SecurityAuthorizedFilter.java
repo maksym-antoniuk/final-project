@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-@WebFilter(filterName = "SecurityAuthorizedFilter", urlPatterns = {Mapping.SERVLET_LOGOUT_URL, Mapping.SERVLET_JOURNEY_URL,
+@WebFilter(filterName = "SecurityAuthorizedFilter", urlPatterns = {Mapping.SERVLET_LOGOUT_URL, Mapping.SERVLET_JOURNEY_URL, Mapping.SERVLET_CHANGE_PASSWORD_URL,
                         Mapping.SERVLET_FILTER_JOURNEYS_URL, Mapping.SERVLET_CAR_JOURNEY_URL, Mapping.SERVLET_IMAGE_URL, Mapping.SERVLET_CABINET_URL})
 public class SecurityAuthorizedFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(SecurityAuthorizedFilter.class);

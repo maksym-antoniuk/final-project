@@ -17,6 +17,8 @@ public class LoginDTO {
         password = request.getParameter(Constants.PARAM_LOGIN_PASSWORD);
     }
 
+    public LoginDTO(){}
+
     public String getEmail() {
         return email;
     }

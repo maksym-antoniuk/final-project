@@ -11,8 +11,8 @@ public class CarValidator {
     private static final String CAR_MODEL = "(?U)\\w{2,15}";
     private static final String CAR_MARK = "(?U)\\w{2,15}";
     private static final String CAR_NUMBER = "(?U)\\w{5,15}";
-    private static final String CAR_CAPACITY = "\\d{1,11}|(\\d+\\.\\d+)";
-    private static final String CAR_MAX_WEIGHT = "\\d{1,11}|(\\d+\\.\\d+)";
+    private static final String CAR_CAPACITY = "^(\\d*\\.?\\d*)$";
+    private static final String CAR_MAX_WEIGHT = "^(\\d*\\.?\\d*)$";
 
     public Map<String, String> validateCreate(CarDTO carDTO) {
         Map<String, String> errors = new HashMap<>();
@@ -28,10 +28,10 @@ public class CarValidator {
         if (!Constants.BODYWORK_LIST.contains(carDTO.getBodywork())) {
             errors.put(Constants.BODYWORK, Constants.INVALID_TYPE);
         }
-        if (!Util.isMatch(CAR_CAPACITY, carDTO.getCapacity())) {
+        if (!Util.isMatch(CAR_CAPACITY, carDTO.getVolume())) {
             errors.put(Constants.CAPACITY, Constants.INVALID_FORMAT);
         }
-        if (!Util.isMatch(CAR_MAX_WEIGHT, carDTO.getVolume())) {
+        if (!Util.isMatch(CAR_MAX_WEIGHT, carDTO.getCapacity())) {
             errors.put(Constants.MAX_WEIGHT, Constants.INVALID_FORMAT);
         }
         return errors;
