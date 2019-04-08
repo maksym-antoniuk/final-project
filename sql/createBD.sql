@@ -167,6 +167,25 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `try_to_login`(myemail VARCHAR(256), 
 
 DELIMITER ;
 
+DELIMITER $$
+USE `final`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_portfolio`(IN user_id INT)
+BEGIN
+	DECLARE var VARCHAR(30);
+    SELECT role from users where id = user_id into var;
+    if(var = 'driver') then
+    SELECT users.id, name, surname, email, phone, role, timestampdiff(DAY, datareg, now()) as days, sum(if(accept = 'yes', 1,0)) as journeys FROM users
+	INNER JOIN cars ON users.id = id_driver
+    LEFT OUTER JOIN journeys_has_cars ON cars.id = cars_id
+	WHERE users.id =  user_id;
+    else
+    SELECT users.id, name, surname, email, phone, role, timestampdiff(DAY, datareg, now()) as days, count(id_manager) as journeys FROM users
+	INNER JOIN journeys ON users.id = id_manager WHERE users.id = user_id ;
+    end if;
+END$$
+
+   DELIMITER ;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
